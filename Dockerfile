@@ -110,9 +110,9 @@ RUN mkdir /home/mysql && \
     chmod +x /home/scripts/start-mysql.sh && \
     echo "#! /bin/sh" > /home/scripts/stop-mysql.sh && \
     echo "/etc/init.d/mysql stop" >> /home/scripts/stop-mysql.sh && \
-    chmod +x /home/scripts/stop-mysql.sh && \
-    rsync -av /var/lib/mysql /home && \
-    sed -i 's/datadir= \/var\/lib\/mysql/datadir= \/home/\/mysql/' /etc/mysql/mysql.conf.d/mysqld.cnf
+    chmod +x /home/scripts/stop-mysql.sh
+RUN    rsync -av /var/lib/mysql /home 
+RUN    sed -i 's/datadir= \/var\/lib\/mysql/datadir= \/home/\/mysql/' /etc/mysql/mysql.conf.d/mysqld.cnf
 
 RUN /etc/init.d/mysql start
 
