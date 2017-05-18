@@ -16,6 +16,7 @@ ARG SCALA_VERSION=2.11.11
 ARG SCALA_BASE_URL=http://www.scala-lang.org/files/archive
 ARG SCALA_URL=${SCALA_BASE_URL}/scala-${SCALA_VERSION}.deb
 
+
 ARG SBT_VERSION=0.13.15
 ARG SBT_BASE_URL=https://dl.bintray.com/sbt/debian/sbt
 ARG SBT_URL=${SBT_BASE_URL}-${SBT_VERSION}.deb
