@@ -62,12 +62,6 @@ RUN pip2 install pandas && \
 #    pip3 install matplotlib
 RUN pip2 install cherrypy && \
     pip3 install cherrypy
-#RUN pip2 install cassandra-driver && \
-#    pip3 install cassandra-driver
-#RUN pip2 install pymongo && \
-#    pip3 install pymongo 
-#RUN pip2 install happybase && \
-#    pip3 install happybase
     
 
 # sqlite3
@@ -80,6 +74,19 @@ RUN echo "mysql-server-5.5 mysql-server/root_password password ${MYSQLROOT_PASSW
     apt-get -y install mysql-client && \
     apt-get -y install libmysql-java
 
+
+RUN mkdir /home/mysql && \
+    echo "[client]" > /etc/my.cnf && \
+    echo "user=root" >> /etc/my.cnf && \
+    echo "password=${MYSQLROOT_PASSWORD}" >> /etc/my.cnf && \
+    echo "#! /bin/sh" > /home/scripts/start-mysql.sh && \
+    echo "/etc/init.d/mysql start" >> /home/scripts/start-mysql.sh && \
+    chmod +x /home/scripts/start-mysql.sh && \
+    echo "#! /bin/sh" > /home/scripts/stop-mysql.sh && \
+    echo "/etc/init.d/mysql stop" >> /home/scripts/stop-mysql.sh && \
+    chmod +x /home/scripts/stop-mysql.sh
+
+# trying various things to move mysql data folder so it's accessible outside the docker
 #RUN mkdir /home/mysql \
 #&& echo "[mysqld]" > /etc/my.cnf \
 #&& echo "datadir=/home/mysql" >> /etc/my.cnf \
@@ -94,27 +101,14 @@ RUN echo "mysql-server-5.5 mysql-server/root_password password ${MYSQLROOT_PASSW
 #&& echo "pid-file=/var/run/mysqld/mysqld.pid" >> /etc/my.cnf
 #RUN rm /etc/my.cnf
 
-
 #rsync -av /var/lib/mysql /home
 #mv /var/lib/mysql /var/lib/mysql.bak
 # sed -i 's/\/var\/lib\/mysql/\/home\/mysql/' /etc/mysql/mysql.conf.d/mysqld.cnf
 
-
-
-RUN mkdir /home/mysql && \
-    echo "[client]" > /etc/my.cnf && \
-    echo "user=root" >> /etc/my.cnf && \
-    echo "password=${MYSQLROOT_PASSWORD}" >> /etc/my.cnf && \
-    echo "#! /bin/sh" > /home/scripts/start-mysql.sh && \
-    echo "/etc/init.d/mysql start" >> /home/scripts/start-mysql.sh && \
-    chmod +x /home/scripts/start-mysql.sh && \
-    echo "#! /bin/sh" > /home/scripts/stop-mysql.sh && \
-    echo "/etc/init.d/mysql stop" >> /home/scripts/stop-mysql.sh && \
-    chmod +x /home/scripts/stop-mysql.sh
-RUN    rsync -av /var/lib/mysql /home
-RUN cp /etc/mysql/mysql.conf.d/mysqld.cnf /home
-RUN    sed -i 's/datadir= \/var\/lib\/mysql/datadir= \/home/\/mysql/' /home/mysqld.cnf
-RUN cp /home/mysqld.cnf /etc/mysql/mysql.conf.d/mysqld.cnf
+#RUN    rsync -av /var/lib/mysql /home
+#RUN cp /etc/mysql/mysql.conf.d/mysqld.cnf /home
+#RUN    sed -i 's/datadir= \t\/var\/lib\/mysql/datadir= \/home/\/mysql/' /home/mysqld.cnf
+#RUN cp /home/mysqld.cnf /etc/mysql/mysql.conf.d/mysqld.cnf
 #RUN    sed -i 's/datadir= \/var\/lib\/mysql/datadir= \/home/\/mysql/' /etc/mysql/mysql.conf.d/mysqld.cnf
 
 RUN /etc/init.d/mysql start
@@ -180,16 +174,14 @@ RUN echo "#! /bin/sh" > /home/scripts/install-r.sh && \
 # 2. create a container and launch bash shell
 # docker run --name ubuntutest -p 50070:50070 -p 8088:8088 -p 10020:10020 -it joegagliardo/ubuntudev /bin/bash -bash
 
-# 3. create a container mapping a local folder to the /home/host folder
-# docker run --name ubuntutest -p 50070:50070 -p 8088:8088 -p 10020:10020 -v "/Users/joey/Dev/:/home/host" -it joegagliardo/ubuntudev /bin/bash -bash
-
+# 3. create a container mapping a local folder ~/docker to the /home/host folder
+# docker run --name ubuntutest -p 50070:50070 -p 8088:8088 -p 10020:10020 -v "$HOME/docker/:/home/host" -it joegagliardo/ubuntudev /bin/bash -bash
+#/var/lib/mysql
 # 4. reconnect to an existing container
 #    docker start ubuntutest
 #    docker attach ubuntutest
 
 # maybe change ~ to go to home not root
-# add vi
-
 
 #sed 
 #RUN sed -i '/^export JAVA_HOME/ s:.*:export JAVA_HOME=/usr\nexport HADOOP_PREFIX=/usr/local/hadoop\nexport HADOOP_HOME=/usr/local/hadoop\n:' $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh
