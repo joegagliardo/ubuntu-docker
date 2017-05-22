@@ -98,8 +98,8 @@ RUN apt-get update && \
     echo "apt-get update" >> /home/scripts/install-r.sh && \
     echo "apt-get -y install r-base" >> /home/scripts/install-r.sh && \
     chmod +x /home/scripts/install-r.sh && \
-    apt-get -y clean && \
-    apt-get -y autoremove
+    apt-get clean && \
+    apt-get autoremove
 
 ENV JAVA_HOME /usr
 ENV PATH $PATH:$JAVA_HOME/bin:/home/scripts
