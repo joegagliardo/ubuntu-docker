@@ -80,9 +80,10 @@ RUN apt-get update && \
     ln -s /usr/share/maven/bin/mvn /usr/bin/mvn && \
     echo "# Scala" && \
     echo ${SCALA_URL} && \
+    cd /home && \
     wget ${SCALA_URL} && \
     dpkg -i scala-${SCALA_VERSION}.deb && \
-    rm /scala-${SCALA_VERSION}.deb && \
+    rm scala-${SCALA_VERSION}.deb && \
     echo "# SBT" && \
     echo ${SBT_URL} && \
     cd /home && \
