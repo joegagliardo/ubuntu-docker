@@ -55,7 +55,7 @@ RUN apt-get update && \
     pip2 install cherrypy && \
     pip3 install cherrypy && \
     echo "# sqlite3" && \
-    echo "# MYSQL"my && \
+    echo "# MYSQL" && \
     echo "mysql-server-5.5 mysql-server/root_password password ${MYSQLROOT_PASSWORD}" | debconf-set-selections && \
     echo "mysql-server-5.5 mysql-server/root_password_again password ${MYSQLROOT_PASSWORD}" | debconf-set-selections && \
     apt-get -y install mysql-server mysql-client libmysql-java && \
