@@ -54,8 +54,6 @@ RUN apt-get update && \
     pip3 install pandas && \
     pip2 install cherrypy && \
     pip3 install cherrypy && \
-    pip2 install matplotlib && \
-    pip3 install matplotlib && \
     echo "# sqlite3" && \
     echo "# MYSQL" && \
     echo "mysql-server-5.5 mysql-server/root_password password ${MYSQLROOT_PASSWORD}" | debconf-set-selections && \
@@ -215,3 +213,7 @@ ENV PATH $PATH:$JAVA_HOME/bin:/home/scripts
 # docker commit 3a09b2588478 mynewimage
 # docker save mynewimage > /tmp/mynewimage.tar
 # docker load < /tmp/mynewimage.tar
+
+#     pip2 install matplotlib && \
+#     pip3 install matplotlib && \
+
