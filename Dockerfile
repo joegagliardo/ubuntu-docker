@@ -106,7 +106,11 @@ RUN apt-get update && \
     chmod +x /home/scripts/install-r.sh && \
     apt-get clean && \
     apt-get autoremove && \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/* && \
+    echo "R and Matplot lib could not be installed during the building of the docker image" > /home/scripts/notes.txt && \
+    echo "because they both prompt for a region and time zone, and I cannot figure out how to script" >> /home/scripts/notes.txt && \
+    echo "default answers. So if you need either of these then run the corresponding install.sh for it" >> /home/scripts/notes.txt && \
+    echo "" >> /home/scripts/notes.txt
 
 ENV JAVA_HOME /usr
 ENV PATH $PATH:$JAVA_HOME/bin:/home/scripts
@@ -195,17 +199,8 @@ ENV PATH $PATH:$JAVA_HOME/bin:/home/scripts
 #    apt-get remove -y software-properties-common && \
 #    apt-get remove -y oracle-java8-installer && \
 #    apt-get remove -y build-essential
-    
-
-
-
 #    apt-get -y install sqlite3 libsqlite3-dev && \
 #    apt-get remove -y sqlite3 && \
-
-#    echo "# Git" && \
-#    apt-get install git && \
-
-
 #    apt-get -y install mysql-server && \
 #    apt-get -y install mysql-client && \
 #    apt-get -y install libmysql-java && \
@@ -218,13 +213,3 @@ ENV PATH $PATH:$JAVA_HOME/bin:/home/scripts
 # docker commit 3a09b2588478 mynewimage
 # docker save mynewimage > /tmp/mynewimage.tar
 # docker load < /tmp/mynewimage.tar
-
-
-    apt-get -y build-dep python-matplotlib && \
-    apt-get install libfreetype6-dev libxft-dev && \
-    pip2 install matplotlib && \
-    pip3 install matplotlib && \
-
-
-
-sudo apt-get -y build-dep python-matplotlib
