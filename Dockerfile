@@ -100,7 +100,8 @@ RUN apt-get update && \
     echo "apt-get -y install r-base" >> /home/scripts/install-r.sh && \
     chmod +x /home/scripts/install-r.sh && \
     apt-get clean && \
-    apt-get autoremove
+    apt-get autoremove && \
+    rm -rf /var/lib/apt/lists/*
 
 ENV JAVA_HOME /usr
 ENV PATH $PATH:$JAVA_HOME/bin:/home/scripts
@@ -206,3 +207,9 @@ ENV PATH $PATH:$JAVA_HOME/bin:/home/scripts
 #    apt-get -y remove mysql-server && \
 #    apt-get -y remove mysql-client && \
 #    apt-get -y remove libmysql-java && \
+
+# docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q)
+# docker tag server:latest myname/server:latest
+# docker commit 3a09b2588478 mynewimage
+# docker save mynewimage > /tmp/mynewimage.tar
+# docker load < /tmp/mynewimage.tar
