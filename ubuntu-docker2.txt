@@ -54,10 +54,11 @@ RUN apt-get update && \
     pip3 install pandas && \
     pip2 install cherrypy && \
     pip3 install cherrypy && \
-    apt-get -y build-dep python-matplotlib && \
-    apt-get -y install libfreetype6-dev libxft-dev && \
-    pip2 install matplotlib && \
-    pip3 install matplotlib && \
+    echo "#! /bin/sh" > /home/scripts/install-matplotlib.sh && \
+    echo "apt-get -y build-dep python-matplotlib" >> /home/scripts/install-matplotlib.sh && \
+    echo "pip2 install matplotlib" >> /home/scripts/install-matplotlib.sh && \
+    echo "pip3 install matplotlib" >> /home/scripts/install-matplotlib.sh && \
+    chmod +x /home/scripts/install-matplotlib.sh && \
     echo "# sqlite3" && \
     echo "# MYSQL" && \
     echo "mysql-server-5.5 mysql-server/root_password password ${MYSQLROOT_PASSWORD}" | debconf-set-selections && \
