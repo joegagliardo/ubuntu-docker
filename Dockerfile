@@ -31,7 +31,7 @@ USER root
 
 # Install Dev Tools & Java
 RUN apt-get update && \
-    apt-get -y install curl tar sudo openssh-server openssh-client rsync nano vim software-properties-common git python2.7 && \
+    apt-get -y install curl tar sudo openssh-server openssh-client rsync nano vim software-properties-common git python2.7 gcc && \
     ln -s /usr/bin/python2.7 /usr/bin/python && \
     add-apt-repository ppa:webupd8team/java -y && \
     apt-get update && \
