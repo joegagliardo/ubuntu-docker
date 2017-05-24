@@ -54,7 +54,8 @@ RUN apt-get update && \
     pip3 install pandas && \
     pip2 install cherrypy && \
     pip3 install cherrypy && \
-    apt-get install libfreetype6-dev libxft-dev && \
+    apt-get -y build-dep python-matplotlib && \
+    apt-get -y install libfreetype6-dev libxft-dev && \
     pip2 install matplotlib && \
     pip3 install matplotlib && \
     echo "# sqlite3" && \
@@ -218,3 +219,11 @@ ENV PATH $PATH:$JAVA_HOME/bin:/home/scripts
 # docker load < /tmp/mynewimage.tar
 
 
+    apt-get -y build-dep python-matplotlib && \
+    apt-get install libfreetype6-dev libxft-dev && \
+    pip2 install matplotlib && \
+    pip3 install matplotlib && \
+
+
+
+sudo apt-get -y build-dep python-matplotlib
