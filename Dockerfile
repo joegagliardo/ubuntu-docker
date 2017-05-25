@@ -14,6 +14,7 @@ ARG MAVEN_URL=${MAVEN_BASE_URL}/${MAVEN_VERSION}/binaries/apache-maven-$MAVEN_VE
 ARG SCALA_VERSION=2.11.11
 ARG SCALA_BASE_URL=http://www.scala-lang.org/files/archive
 ARG SCALA_URL=${SCALA_BASE_URL}/scala-${SCALA_VERSION}.deb
+#http://www.scala-lang.org/files/archive/scala-2.11.11.deb
 
 ARG SBT_VERSION=0.13.15
 ARG SBT_BASE_URL=https://dl.bintray.com/sbt/debian/sbt
@@ -55,6 +56,8 @@ RUN apt-get update && \
     pip3 install pandas && \
     pip2 install cherrypy && \
     pip3 install cherrypy && \
+    pip2 install pymssql && \
+    pip3 install pymssql && \
     echo "#! /bin/sh" > /data/scripts/install-matplotlib.sh && \
     echo "apt-get -y build-dep python-matplotlib" >> /data/scripts/install-matplotlib.sh && \
     echo "pip2 install matplotlib" >> /data/scripts/install-matplotlib.sh && \
@@ -219,3 +222,12 @@ ENV PATH $PATH:$JAVA_HOME/bin:/data/scripts
 # alias newub="docker run --name ubuntu-client -v \"$HOME/docker/:/data/host\" -it joegagliardo/ubuntu /etc/bootstrap.sh -bash"
 # alias attachub="docker start ubuntu-client && docker attach ubuntu-client"
 
+
+# wget http://downloads.lightbend.com/scala/2.11.11/scala-2.11.11.rpm
+# yum -y install scala-2.11.11.rpm
+# curl https://bintray.com/sbt/rpm/rpm | tee /etc/yum.repos.d/bintray-sbt-rpm.repo
+# yum -y install sbt
+# yum -y install git
+# git clone https://github.com/databricks/spark-xml.git
+# cd spark-xml
+# sbt/sbt package
