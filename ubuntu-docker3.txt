@@ -64,6 +64,7 @@ RUN apt-get update && \
     echo "pip3 install matplotlib" >> /data/scripts/install-matplotlib.sh && \
     chmod +x /data/scripts/install-matplotlib.sh && \
     echo "# sqlite3" && \
+    apt-get -y install sqlite3 libsqlite3-dev && \
     echo "# MYSQL" && \
     echo "mysql-server-5.5 mysql-server/root_password password ${MYSQLROOT_PASSWORD}" | debconf-set-selections && \
     echo "mysql-server-5.5 mysql-server/root_password_again password ${MYSQLROOT_PASSWORD}" | debconf-set-selections && \
@@ -111,7 +112,8 @@ RUN apt-get update && \
     apt-get clean && \
     apt-get autoremove && \
     rm -rf /var/lib/apt/lists/* && \
-    echo "R and Matplot lib could not be installed during the building of the docker image" > /data/scripts/notes.txt && \
+    echo "" > /data/scripts/notes.txt
+    echo "R and Matplot lib could not be installed during the building of the docker image" >> /data/scripts/notes.txt && \
     echo "because they both prompt for a region and time zone, and I cannot figure out how to script" >> /data/scripts/notes.txt && \
     echo "default answers. So if you need either of these then run the corresponding install.sh for it" >> /data/scripts/notes.txt && \
     echo "" >> /data/scripts/notes.txt
@@ -231,3 +233,6 @@ ENV PATH $PATH:$JAVA_HOME/bin:/data/scripts
 # git clone https://github.com/databricks/spark-xml.git
 # cd spark-xml
 # sbt/sbt package
+
+#    echo "# postgresql" && \
+#    apt-get -yq install vim postgresql-9.3 libpostgresql-jdbc-java && \
