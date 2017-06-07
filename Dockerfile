@@ -37,16 +37,16 @@ RUN apt-get update && \
     add-apt-repository ppa:webupd8team/java -y && \
     apt-get update && \
     apt-get -y install oracle-java8-installer build-essential && \
-    mkdir /data && \
-    mkdir /data/scripts && \
-    cd /data && \
-    mkdir /data/host && \
+    mkdir /scripts && \
+    mkdir /home/dockerdata && \
+    ln -s /home/dockerdata /data && \
+    cd /home && \
     wget https://bootstrap.pypa.io/get-pip.py && \
     python get-pip.py && \
     python3 get-pip.py && \
     rm /usr/local/bin/pip && \
     ln -s /usr/local/bin/pip2 /usr/local/bin/pip && \
-    mv get-pip.py scripts && \
+    mv get-pip.py /scripts && \
     pip2 install numpy && \
     pip3 install numpy && \
     pip2 install scipy && \
@@ -57,27 +57,27 @@ RUN apt-get update && \
     pip3 install cherrypy && \
     pip2 install pymssql && \
     pip3 install pymssql && \
-    echo "#! /bin/sh" > /data/scripts/install-matplotlib.sh && \
-    echo "apt-get -y build-dep python-matplotlib" >> /data/scripts/install-matplotlib.sh && \
-    echo "pip2 install matplotlib" >> /data/scripts/install-matplotlib.sh && \
-    echo "pip3 install matplotlib" >> /data/scripts/install-matplotlib.sh && \
-    chmod +x /data/scripts/install-matplotlib.sh && \
+    echo "#! /bin/sh" > /scripts/install-matplotlib.sh && \
+    echo "apt-get -y build-dep python-matplotlib" >> /scripts/install-matplotlib.sh && \
+    echo "pip2 install matplotlib" >> /scripts/install-matplotlib.sh && \
+    echo "pip3 install matplotlib" >> /scripts/install-matplotlib.sh && \
+    chmod +x /scripts/install-matplotlib.sh && \
     echo "# sqlite3" && \
     apt-get -y install sqlite3 libsqlite3-dev && \
     echo "# MYSQL" && \
     echo "mysql-server-5.5 mysql-server/root_password password ${MYSQLROOT_PASSWORD}" | debconf-set-selections && \
     echo "mysql-server-5.5 mysql-server/root_password_again password ${MYSQLROOT_PASSWORD}" | debconf-set-selections && \
     apt-get -y install mysql-server mysql-client libmysql-java && \
-    mkdir /data/host/mysql && \
+    mkdir /home/dockerdata/mysql && \
     echo "[client]" > /etc/my.cnf && \
     echo "user=root" >> /etc/my.cnf && \
     echo "password=${MYSQLROOT_PASSWORD}" >> /etc/my.cnf && \
-    echo "#! /bin/sh" > /data/scripts/start-mysql.sh && \
-    echo "/etc/init.d/mysql start" >> /data/scripts/start-mysql.sh && \
-    chmod +x /data/scripts/start-mysql.sh && \
-    echo "#! /bin/sh" > /data/scripts/stop-mysql.sh && \
-    echo "/etc/init.d/mysql stop" >> /data/scripts/stop-mysql.sh && \
-    chmod +x /data/scripts/stop-mysql.sh && \
+    echo "#! /bin/sh" > /scripts/start-mysql.sh && \
+    echo "/etc/init.d/mysql start" >> /scripts/start-mysql.sh && \
+    chmod +x /scripts/start-mysql.sh && \
+    echo "#! /bin/sh" > /scripts/stop-mysql.sh && \
+    echo "/etc/init.d/mysql stop" >> /scripts/stop-mysql.sh && \
+    chmod +x /scripts/stop-mysql.sh && \
     /etc/init.d/mysql start && \
     echo "# Maven" && \
     echo ${MAVEN_URL} && \ 
@@ -89,36 +89,36 @@ RUN apt-get update && \
     ln -s /usr/share/maven/bin/mvn /usr/bin/mvn && \
     echo "# Scala" && \
     echo ${SCALA_URL} && \
-    cd /data && \
+    cd /home && \
     wget ${SCALA_URL} && \
     dpkg -i scala-${SCALA_VERSION}.deb && \
     rm scala-${SCALA_VERSION}.deb && \
     echo "# SBT" && \
     echo ${SBT_URL} && \
-    cd /data && \
+    cd /home && \
     wget ${SBT_URL} && \
     dpkg -i sbt-${SBT_VERSION}.deb && \
-    cd /data && \
+    cd /home && \
     apt-get install -f && \
-    rm /data/sbt-${SBT_VERSION}.deb && \
+    rm /home/sbt-${SBT_VERSION}.deb && \
     echo "Install R" && \
-    echo "#! /bin/sh" > /data/scripts/install-r.sh && \
-    echo "apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9" >> /data/scripts/install-r.sh && \
-    echo "add-apt-repository 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial/'" >> /data/scripts/install-r.sh && \
-    echo "apt-get update" >> /data/scripts/install-r.sh && \
-    echo "apt-get -y install r-base" >> /data/scripts/install-r.sh && \
-    chmod +x /data/scripts/install-r.sh && \
+    echo "#! /bin/sh" > /scripts/install-r.sh && \
+    echo "apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9" >> /scripts/install-r.sh && \
+    echo "add-apt-repository 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial/'" >> /scripts/install-r.sh && \
+    echo "apt-get update" >> /scripts/install-r.sh && \
+    echo "apt-get -y install r-base" >> /scripts/install-r.sh && \
+    chmod +x /scripts/install-r.sh && \
     apt-get clean && \
     apt-get autoremove && \
     rm -rf /var/lib/apt/lists/* && \
-    echo "" > /data/scripts/notes.txt && \
-    echo "R and Matplot lib could not be installed during the building of the docker image" >> /data/scripts/notes.txt && \
-    echo "because they both prompt for a region and time zone, and I cannot figure out how to script" >> /data/scripts/notes.txt && \
-    echo "default answers. So if you need either of these then run the corresponding install.sh for it" >> /data/scripts/notes.txt && \
-    echo "" >> /data/scripts/notes.txt
+    echo "" > /scripts/notes.txt && \
+    echo "R and Matplot lib could not be installed during the building of the docker image" >> /scripts/notes.txt && \
+    echo "because they both prompt for a region and time zone, and I cannot figure out how to script" >> /scripts/notes.txt && \
+    echo "default answers. So if you need either of these then run the corresponding install.sh for it" >> /scripts/notes.txt && \
+    echo "" >> /scripts/notes.txt
 
 ENV JAVA_HOME /usr
-ENV PATH $PATH:$JAVA_HOME/bin:/data/scripts
+ENV PATH $PATH:$JAVA_HOME/bin:/scripts:/home
 
 #    apt-get remove scala-library scala && \
 # R
