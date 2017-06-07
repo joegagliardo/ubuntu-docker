@@ -36,7 +36,6 @@ RUN apt-get update && \
     ln -s /usr/bin/python2.7 /usr/bin/python && \
     add-apt-repository ppa:webupd8team/java -y && \
     apt-get update && \
-    echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections && \
     apt-get -y install oracle-java8-installer build-essential && \
     mkdir /data && \
     mkdir /data/scripts && \
@@ -112,7 +111,7 @@ RUN apt-get update && \
     apt-get clean && \
     apt-get autoremove && \
     rm -rf /var/lib/apt/lists/* && \
-    echo "" > /data/scripts/notes.txt
+    echo "" > /data/scripts/notes.txt && \
     echo "R and Matplot lib could not be installed during the building of the docker image" >> /data/scripts/notes.txt && \
     echo "because they both prompt for a region and time zone, and I cannot figure out how to script" >> /data/scripts/notes.txt && \
     echo "default answers. So if you need either of these then run the corresponding install.sh for it" >> /data/scripts/notes.txt && \
@@ -236,3 +235,4 @@ ENV PATH $PATH:$JAVA_HOME/bin:/data/scripts
 
 #    echo "# postgresql" && \
 #    apt-get -yq install vim postgresql-9.3 libpostgresql-jdbc-java && \
+#     echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections && \
