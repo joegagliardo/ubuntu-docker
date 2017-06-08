@@ -85,10 +85,10 @@ RUN apt-get update && \
     echo "/etc/init.d/mysql stop" >> /scripts/move-mysql.sh && \
     echo "mv /var/lib/mysql /home/dockerdata/mysql" >> /scripts/move-mysql.sh && \
     echo "ln -s /home/dockerdata/mysql /var/lib/mysql" >> /scripts/move-mysql.sh && \
-    echo "echo \"alias /var/lib/mysql/ -> /home/dockerdata/mysql,\" >> /etc/apparmor.d/tunables/alias\"" >> /scripts/move-mysql.sh && \
+    echo "echo \"alias /var/lib/mysql/ -> /home/dockerdata/mysql,\" >> /etc/apparmor.d/tunables/alias" >> /scripts/move-mysql.sh && \
     echo "systemctl restart apparmor" >> /scripts/move-mysql.sh && \
     echo "/etc/init.d/mysql start" >> /scripts/move-mysql.sh && \
-    chmod +x /scripts/move-mysql.sh" && \
+    chmod +x /scripts/move-mysql.sh && \
     echo "# Maven" && \
     echo ${MAVEN_URL} && \ 
     mkdir -p /usr/share/maven /usr/share/maven/ref && \
