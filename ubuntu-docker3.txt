@@ -78,6 +78,11 @@ RUN apt-get update && \
     echo "#! /bin/sh" > /scripts/stop-mysql.sh && \
     echo "/etc/init.d/mysql stop" >> /scripts/stop-mysql.sh && \
     chmod +x /scripts/stop-mysql.sh && \
+    /etc/init.d/mysql stop && \
+    mv /var/lib/mysql /home/dockerdata/mysql && \
+    ln -s /home/dockerdata/mysql /var/lib/mysql && \
+    echo "alias /var/lib/mysql/ -> /home/dockerdata/mysql," >> /etc/apparmor.d/tunables/alias && \
+    systemctl restart apparmor && \
     /etc/init.d/mysql start && \
     echo "# Maven" && \
     echo ${MAVEN_URL} && \ 
