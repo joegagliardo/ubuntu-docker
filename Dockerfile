@@ -36,6 +36,7 @@ RUN apt-get update && \
     ln -s /usr/bin/python2.7 /usr/bin/python && \
     add-apt-repository ppa:webupd8team/java -y && \
     apt-get update && \
+    echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections && \
     apt-get -y install oracle-java8-installer build-essential && \
     mkdir /scripts && \
     mkdir /home/dockerdata && \
@@ -60,8 +61,10 @@ RUN apt-get update && \
     echo "#! /bin/sh" > /scripts/install-matplotlib.sh && \
     echo "apt-get -y build-dep python-matplotlib" >> /scripts/install-matplotlib.sh && \
     echo "pip2 install matplotlib" >> /scripts/install-matplotlib.sh && \
-    echo "pip3 install matplotlib" >> /scripts/install-matplotlib.sh && \
-    chmod +x /scripts/install-matplotlib.sh && \
+    pip3 install matplotlib && \
+    echo "# nodejs" && \
+    apt-get -y install nodejs && \
+    apt-get -y install npm && \
     echo "# sqlite3" && \
     apt-get -y install sqlite3 libsqlite3-dev && \
     echo "# MYSQL" && \
@@ -117,9 +120,9 @@ RUN apt-get update && \
     apt-get autoremove && \
     rm -rf /var/lib/apt/lists/* && \
     echo "" > /scripts/notes.txt && \
-    echo "R and Matplot lib could not be installed during the building of the docker image" >> /scripts/notes.txt && \
-    echo "because they both prompt for a region and time zone, and I cannot figure out how to script" >> /scripts/notes.txt && \
-    echo "default answers. So if you need either of these then run the corresponding install.sh for it" >> /scripts/notes.txt && \
+    echo "R and Matplotlib for Python 2 could not be installed during the building of the docker image" >> /scripts/notes.txt && \
+    echo "because it prompts for a region and time zone, and I cannot figure out how to script" >> /scripts/notes.txt && \
+    echo "default answers. So if you need either of these then run the corresponding install.sh for it in the /scripts folder" >> /scripts/notes.txt && \
     echo "" >> /scripts/notes.txt
 
 ENV JAVA_HOME /usr
@@ -241,3 +244,9 @@ ENV PATH $PATH:$JAVA_HOME/bin:/scripts:/home
 #    echo "# postgresql" && \
 #    apt-get -yq install vim postgresql-9.3 libpostgresql-jdbc-java && \
 #     echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections && \
+
+
+#    echo "#! /bin/sh" > /scripts/install-matplotlib.sh && \
+#    echo "apt-get -y build-dep python-matplotlib" >> /scripts/install-matplotlib.sh && \
+#    echo "pip2 install matplotlib" >> /scripts/install-matplotlib.sh && \
+#    chmod +x /scripts/install-matplotlib.sh && \
