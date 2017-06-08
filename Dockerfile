@@ -32,7 +32,7 @@ USER root
 
 # Install Dev Tools & Java
 RUN apt-get update && \
-    apt-get -y install curl tar sudo openssh-server openssh-client rsync nano vim software-properties-common git python2.7 gcc && \
+    apt-get -y install curl tar sudo openssh-server openssh-client rsync nano vim software-properties-common git python2.7 gcc netcat && \
     ln -s /usr/bin/python2.7 /usr/bin/python && \
     add-apt-repository ppa:webupd8team/java -y && \
     apt-get update && \
@@ -59,8 +59,10 @@ RUN apt-get update && \
     pip2 install pymssql && \
     pip3 install pymssql && \
     echo "#! /bin/sh" > /scripts/install-matplotlib.sh && \
+    echo "apt-get update"  >> /scripts/install-matplotlib.sh && \
     echo "apt-get -y build-dep python-matplotlib" >> /scripts/install-matplotlib.sh && \
     echo "pip2 install matplotlib" >> /scripts/install-matplotlib.sh && \
+    chmod +x /scripts/install-matplotlib.sh && \
     pip3 install matplotlib && \
     echo "# nodejs" && \
     apt-get -y install nodejs && \
