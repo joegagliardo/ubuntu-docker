@@ -81,12 +81,6 @@ RUN apt-get update && \
     echo "#! /bin/sh" > /scripts/stop-mysql.sh && \
     echo "/etc/init.d/mysql stop" >> /scripts/stop-mysql.sh && \
     chmod +x /scripts/stop-mysql.sh && \
-    /etc/init.d/mysql stop && \
-    mv /var/lib/mysql /home/dockerdata/mysql && \
-    ln -s /home/dockerdata/mysql /var/lib/mysql && \
-    echo "alias /var/lib/mysql/ -> /home/dockerdata/mysql," >> /etc/apparmor.d/tunables/alias && \
-    systemctl restart apparmor && \
-    /etc/init.d/mysql start && \
     echo "# Maven" && \
     echo ${MAVEN_URL} && \ 
     mkdir -p /usr/share/maven /usr/share/maven/ref && \
@@ -116,6 +110,12 @@ RUN apt-get update && \
     echo "apt-get update" >> /scripts/install-r.sh && \
     echo "apt-get -y install r-base" >> /scripts/install-r.sh && \
     chmod +x /scripts/install-r.sh && \
+    /etc/init.d/mysql stop && \
+    mv /var/lib/mysql /home/dockerdata/mysql && \
+    ln -s /home/dockerdata/mysql /var/lib/mysql && \
+    echo "alias /var/lib/mysql/ -> /home/dockerdata/mysql," >> /etc/apparmor.d/tunables/alias && \
+    systemctl restart apparmor && \
+    /etc/init.d/mysql start && \
     apt-get clean && \
     apt-get autoremove && \
     rm -rf /var/lib/apt/lists/* && \
