@@ -40,7 +40,8 @@ RUN apt-get update && \
     apt-get -y install oracle-java8-installer build-essential && \
     mkdir /scripts && \
     mkdir /home/dockerdata && \
-    ln -s /home/dockerdata /data && \
+    mkdir /data &&
+    # ln -s /home/dockerdata /data && \
     cd /home && \
     wget https://bootstrap.pypa.io/get-pip.py && \
     python get-pip.py && \
@@ -83,7 +84,8 @@ RUN apt-get update && \
     echo "#! /bin/sh" > /scripts/stop-mysql.sh && \
     echo "/etc/init.d/mysql stop" >> /scripts/stop-mysql.sh && \
     chmod +x /scripts/stop-mysql.sh && \
-    echo "#! /bin/sh"> /scripts/move-mysql.sh && \
+    echo "#! /bin/sh" > /scripts/move-mysql.sh && \
+    echo "# this is not yet working so don't do it." >> /scripts/move-mysql.sh && \
     echo "/etc/init.d/mysql stop" >> /scripts/move-mysql.sh && \
     echo "mv /var/lib/mysql /home/dockerdata/mysql" >> /scripts/move-mysql.sh && \
     echo "ln -s /home/dockerdata/mysql /var/lib/mysql" >> /scripts/move-mysql.sh && \
@@ -127,6 +129,10 @@ RUN apt-get update && \
     echo "R and Matplotlib for Python 2 could not be installed during the building of the docker image" >> /scripts/notes.txt && \
     echo "because it prompts for a region and time zone, and I cannot figure out how to script" >> /scripts/notes.txt && \
     echo "default answers. So if you need either of these then run the corresponding install.sh for it in the /scripts folder" >> /scripts/notes.txt && \
+    echo "" >> /scripts/notes.txt && \
+    echo "I cannot automate some things during the build, but I can pull the image, manually do some things and push" >> /scripts/notes.txt && \
+    echo "the image back so they are done. It's time consuming but if I do that, I will indicate here in the notes which" >> /scripts/notes.txt && \
+    echo "steps I have done. I will likely move the MySQL database, install matplotlib and R." >> /scripts/notes.txt && \
     echo "" >> /scripts/notes.txt
 
 ENV JAVA_HOME /usr

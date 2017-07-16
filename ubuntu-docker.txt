@@ -4,7 +4,6 @@ MAINTAINER joegagliardo
 EXPOSE 50020 50090 50070 50010 50075 8031 8032 8033 8040 8042 49707 22 8088 8030
 
 # MYSQL Passwords
-ARG HIVEUSER_PASSWORD=hivepassword
 ARG MYSQLROOT_PASSWORD=rootpassword
 
 # Versions
@@ -15,76 +14,135 @@ ARG MAVEN_URL=${MAVEN_BASE_URL}/${MAVEN_VERSION}/binaries/apache-maven-$MAVEN_VE
 ARG SCALA_VERSION=2.11.11
 ARG SCALA_BASE_URL=http://www.scala-lang.org/files/archive
 ARG SCALA_URL=${SCALA_BASE_URL}/scala-${SCALA_VERSION}.deb
+#http://www.scala-lang.org/files/archive/scala-2.11.11.deb
 
 ARG SBT_VERSION=0.13.15
 ARG SBT_BASE_URL=https://dl.bintray.com/sbt/debian/sbt
 ARG SBT_URL=${SBT_BASE_URL}-${SBT_VERSION}.deb
 
+# Maven
+ARG USER_HOME_DIR="/root"
+ARG SHA=beb91419245395bd69a4a6edad5ca3ec1a8b64e41457672dc687c173a495f034
+
 USER root
+
+#    apt-get -y install curl tar sudo openssh-server openssh-client rsync nano vim && \
+#    apt-get -y upgrade && \
+#    apt-get -y install software-properties-common && \ 
 
 # Install Dev Tools & Java
 RUN apt-get update && \
-    apt-get install -y nano && \
-    apt-get install -y vim && \
-    apt-get install -y curl tar sudo openssh-server openssh-client rsync && \
-    apt-get upgrade -y && \
-    apt-get install -y software-properties-common && \ 
+    apt-get -y install curl tar sudo openssh-server openssh-client rsync nano vim software-properties-common git python2.7 gcc netcat && \
+    ln -s /usr/bin/python2.7 /usr/bin/python && \
     add-apt-repository ppa:webupd8team/java -y && \
     apt-get update && \
     echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections && \
-    apt-get install -y oracle-java8-installer && \
-    apt-get install -y build-essential && \
-    apt-get clean && \
-    mkdir /home/scripts
-    
-
-ENV JAVA_HOME /usr
-ENV PATH $PATH:$JAVA_HOME/bin:/home/scripts
-
-# Python
-RUN apt-get -y install python2.7
-RUN ln -s /usr/bin/python2.7 /usr/bin/python
-RUN cd /home && \
-    mkdir /home/host && \
+    apt-get -y install oracle-java8-installer build-essential && \
+    mkdir /scripts && \
+    mkdir /home/dockerdata && \
+    mkdir /data &&
+    # ln -s /home/dockerdata /data && \
+    cd /home && \
     wget https://bootstrap.pypa.io/get-pip.py && \
     python get-pip.py && \
     python3 get-pip.py && \
     rm /usr/local/bin/pip && \
     ln -s /usr/local/bin/pip2 /usr/local/bin/pip && \
-    mv get-pip.py scripts
-RUN pip2 install numpy && \
-    pip3 install numpy
-RUN pip2 install scipy && \
-    pip3 install scipy
-RUN pip2 install pandas && \
-    pip3 install pandas
-#RUN pip2 install matplotlib &&\
-#    pip3 install matplotlib
-RUN pip2 install cherrypy && \
-    pip3 install cherrypy
-    
-
-# sqlite3
-RUN apt-get -y install sqlite3 libsqlite3-dev
-
-# MYSQL
-RUN echo "mysql-server-5.5 mysql-server/root_password password ${MYSQLROOT_PASSWORD}" | debconf-set-selections && \
+    mv get-pip.py /scripts && \
+    pip2 install numpy && \
+    pip3 install numpy && \
+    pip2 install scipy && \
+    pip3 install scipy && \
+    pip2 install pandas && \
+    pip3 install pandas && \
+    pip2 install cherrypy && \
+    pip3 install cherrypy && \
+    pip2 install pymssql && \
+    pip3 install pymssql && \
+    echo "#! /bin/sh" > /scripts/install-matplotlib.sh && \
+    echo "apt-get update"  >> /scripts/install-matplotlib.sh && \
+    echo "apt-get -y build-dep python-matplotlib" >> /scripts/install-matplotlib.sh && \
+    echo "pip2 install matplotlib" >> /scripts/install-matplotlib.sh && \
+    chmod +x /scripts/install-matplotlib.sh && \
+    pip3 install matplotlib && \
+    echo "# nodejs" && \
+    apt-get -y install nodejs && \
+    apt-get -y install npm && \
+    echo "# sqlite3" && \
+    apt-get -y install sqlite3 libsqlite3-dev && \
+    echo "# MYSQL" && \
+    echo "mysql-server-5.5 mysql-server/root_password password ${MYSQLROOT_PASSWORD}" | debconf-set-selections && \
     echo "mysql-server-5.5 mysql-server/root_password_again password ${MYSQLROOT_PASSWORD}" | debconf-set-selections && \
-    apt-get -y install mysql-server && \
-    apt-get -y install mysql-client && \
-    apt-get -y install libmysql-java
-
-
-RUN mkdir /home/mysql && \
+    apt-get -y install mysql-server mysql-client libmysql-java && \
+    mkdir /home/dockerdata/mysql && \
     echo "[client]" > /etc/my.cnf && \
     echo "user=root" >> /etc/my.cnf && \
     echo "password=${MYSQLROOT_PASSWORD}" >> /etc/my.cnf && \
-    echo "#! /bin/sh" > /home/scripts/start-mysql.sh && \
-    echo "/etc/init.d/mysql start" >> /home/scripts/start-mysql.sh && \
-    chmod +x /home/scripts/start-mysql.sh && \
-    echo "#! /bin/sh" > /home/scripts/stop-mysql.sh && \
-    echo "/etc/init.d/mysql stop" >> /home/scripts/stop-mysql.sh && \
-    chmod +x /home/scripts/stop-mysql.sh
+    echo "#! /bin/sh" > /scripts/start-mysql.sh && \
+    echo "/etc/init.d/mysql start" >> /scripts/start-mysql.sh && \
+    chmod +x /scripts/start-mysql.sh && \
+    echo "#! /bin/sh" > /scripts/stop-mysql.sh && \
+    echo "/etc/init.d/mysql stop" >> /scripts/stop-mysql.sh && \
+    chmod +x /scripts/stop-mysql.sh && \
+    echo "#! /bin/sh" > /scripts/move-mysql.sh && \
+    echo "# this is not yet working so don't do it." >> /scripts/move-mysql.sh && \
+    echo "/etc/init.d/mysql stop" >> /scripts/move-mysql.sh && \
+    echo "mv /var/lib/mysql /home/dockerdata/mysql" >> /scripts/move-mysql.sh && \
+    echo "ln -s /home/dockerdata/mysql /var/lib/mysql" >> /scripts/move-mysql.sh && \
+    echo "echo \"alias /var/lib/mysql/ -> /home/dockerdata/mysql,\" >> /etc/apparmor.d/tunables/alias" >> /scripts/move-mysql.sh && \
+    echo "systemctl restart apparmor" >> /scripts/move-mysql.sh && \
+    echo "/etc/init.d/mysql start" >> /scripts/move-mysql.sh && \
+    chmod +x /scripts/move-mysql.sh && \
+    echo "# Maven" && \
+    echo ${MAVEN_URL} && \ 
+    mkdir -p /usr/share/maven /usr/share/maven/ref && \
+    curl -fsSL -o /tmp/apache-maven.tar.gz ${MAVEN_URL} && \ 
+    echo "${SHA}  /tmp/apache-maven.tar.gz" | sha256sum -c - && \
+    tar -xzf /tmp/apache-maven.tar.gz -C /usr/share/maven --strip-components=1 && \
+    rm -f /tmp/apache-maven.tar.gz && \
+    ln -s /usr/share/maven/bin/mvn /usr/bin/mvn && \
+    echo "# Scala" && \
+    echo ${SCALA_URL} && \
+    cd /home && \
+    wget ${SCALA_URL} && \
+    dpkg -i scala-${SCALA_VERSION}.deb && \
+    rm scala-${SCALA_VERSION}.deb && \
+    echo "# SBT" && \
+    echo ${SBT_URL} && \
+    cd /home && \
+    wget ${SBT_URL} && \
+    dpkg -i sbt-${SBT_VERSION}.deb && \
+    cd /home && \
+    apt-get install -f && \
+    rm /home/sbt-${SBT_VERSION}.deb && \
+    echo "Install R" && \
+    echo "#! /bin/sh" > /scripts/install-r.sh && \
+    echo "apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9" >> /scripts/install-r.sh && \
+    echo "add-apt-repository 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial/'" >> /scripts/install-r.sh && \
+    echo "apt-get update" >> /scripts/install-r.sh && \
+    echo "apt-get -y install r-base" >> /scripts/install-r.sh && \
+    chmod +x /scripts/install-r.sh && \
+    apt-get clean && \
+    apt-get autoremove && \
+    rm -rf /var/lib/apt/lists/* && \
+    echo "" > /scripts/notes.txt && \
+    echo "R and Matplotlib for Python 2 could not be installed during the building of the docker image" >> /scripts/notes.txt && \
+    echo "because it prompts for a region and time zone, and I cannot figure out how to script" >> /scripts/notes.txt && \
+    echo "default answers. So if you need either of these then run the corresponding install.sh for it in the /scripts folder" >> /scripts/notes.txt && \
+    echo "" >> /scripts/notes.txt && \
+    echo "I cannot automate some things during the build, but I can pull the image, manually do some things and push" >> /scripts/notes.txt && \
+    echo "the image back so they are done. It's time consuming but if I do that, I will indicate here in the notes which" >> /scripts/notes.txt && \
+    echo "steps I have done. I will likely move the MySQL database, install matplotlib and R." >> /scripts/notes.txt && \
+    echo "" >> /scripts/notes.txt
+
+ENV JAVA_HOME /usr
+ENV PATH $PATH:$JAVA_HOME/bin:/scripts:/home
+
+#    apt-get remove scala-library scala && \
+# R
+# R must be installed by manually executing this script because it has a prompt for the region and time zone
+# which I cannot automate
+
 
 # trying various things to move mysql data folder so it's accessible outside the docker
 #RUN mkdir /home/mysql \
@@ -111,49 +169,6 @@ RUN mkdir /home/mysql && \
 #RUN cp /home/mysqld.cnf /etc/mysql/mysql.conf.d/mysqld.cnf
 #RUN    sed -i 's/datadir= \/var\/lib\/mysql/datadir= \/home/\/mysql/' /etc/mysql/mysql.conf.d/mysqld.cnf
 
-RUN /etc/init.d/mysql start
-
-# Git
-RUN apt-get install -y git
-
-# Maven
-RUN echo ${MAVEN_URL} 
-ARG USER_HOME_DIR="/root"
-ARG SHA=beb91419245395bd69a4a6edad5ca3ec1a8b64e41457672dc687c173a495f034
-RUN mkdir -p /usr/share/maven /usr/share/maven/ref
-RUN curl -fsSL -o /tmp/apache-maven.tar.gz ${MAVEN_URL} 
-RUN echo "${SHA}  /tmp/apache-maven.tar.gz" | sha256sum -c - 
-RUN tar -xzf /tmp/apache-maven.tar.gz -C /usr/share/maven --strip-components=1 && \
-    rm -f /tmp/apache-maven.tar.gz && \
-    ln -s /usr/share/maven/bin/mvn /usr/bin/mvn
-   
-# Scala
-RUN echo ${SCALA_URL} 
-RUN apt-get remove scala-library scala
-RUN wget ${SCALA_URL}
-#RUN wget www.scala-lang.org/files/archive/scala-${SCALA_VERSION}.deb
-RUN dpkg -i scala-${SCALA_VERSION}.deb
-RUN rm /scala-${SCALA_VERSION}.deb
-
-# SBT
-RUN echo ${SBT_URL} 
-RUN cd /home && \
-    wget ${SBT_URL} && \
-    dpkg -i sbt-${SBT_VERSION}.deb 
-RUN cd /home && \
-    apt-get install -f
-RUN rm /home/sbt-${SBT_VERSION}.deb
-    
-
-# R
-# R must be installed by manually executing this script because it has a prompt for the region and time zone
-# which I cannot automate
-RUN echo "#! /bin/sh" > /home/scripts/install-r.sh && \
-    echo "apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9" >> /home/scripts/install-r.sh && \
-    echo "add-apt-repository 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial/'" >> /home/scripts/install-r.sh && \
-    echo "apt-get update" >> /home/scripts/install-r.sh && \
-    echo "apt-get install -y r-base" >> /home/scripts/install-r.sh && \
-    chmod +x /home/scripts/install-r.sh
 
 # .Net Core
 #RUN sh -c 'echo "deb [arch=amd64] https://apt-mo.trafficmanager.net/repos/dotnet-release/ xenial main" > /etc/apt/sources.list.d/dotnetdev.list' 
@@ -174,8 +189,8 @@ RUN echo "#! /bin/sh" > /home/scripts/install-r.sh && \
 # 2. create a container and launch bash shell
 # docker run --name ubuntutest -p 50070:50070 -p 8088:8088 -p 10020:10020 -it joegagliardo/ubuntudev /bin/bash -bash
 
-# 3. create a container mapping a local folder ~/docker to the /home/host folder
-# docker run --name ubuntutest -p 50070:50070 -p 8088:8088 -p 10020:10020 -v "$HOME/docker/:/home/host" -it joegagliardo/ubuntudev /bin/bash -bash
+# 3. create a container mapping a local folder ~/docker to the /data/host folder
+# docker run --name ubuntutest -p 50070:50070 -p 8088:8088 -p 10020:10020 -v "$HOME/docker/:/data/host" -it joegagliardo/ubuntudev /bin/bash -bash
 #/var/lib/mysql
 # 4. reconnect to an existing container
 #    docker start ubuntutest
@@ -201,4 +216,47 @@ RUN echo "#! /bin/sh" > /home/scripts/install-r.sh && \
 #pyspark
 #mysql
 
+#    apt-get remove -y nano && \
+#    apt-get remove -y vim && \
+#    apt-get remove -y curl && \
+#    apt-get remove -y software-properties-common && \
+#    apt-get remove -y oracle-java8-installer && \
+#    apt-get remove -y build-essential
+#    apt-get -y install sqlite3 libsqlite3-dev && \
+#    apt-get remove -y sqlite3 && \
+#    apt-get -y install mysql-server && \
+#    apt-get -y install mysql-client && \
+#    apt-get -y install libmysql-java && \
+#    apt-get -y remove mysql-server && \
+#    apt-get -y remove mysql-client && \
+#    apt-get -y remove libmysql-java && \
 
+# docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q)
+# docker tag server:latest myname/server:latest
+# docker commit 3a09b2588478 mynewimage
+# docker save mynewimage > /tmp/mynewimage.tar
+# docker load < /tmp/mynewimage.tar
+
+
+# alias newub="docker run --name ubuntu-client -v \"$HOME/docker/:/data/host\" -it joegagliardo/ubuntu /etc/bootstrap.sh -bash"
+# alias attachub="docker start ubuntu-client && docker attach ubuntu-client"
+
+
+# wget http://downloads.lightbend.com/scala/2.11.11/scala-2.11.11.rpm
+# yum -y install scala-2.11.11.rpm
+# curl https://bintray.com/sbt/rpm/rpm | tee /etc/yum.repos.d/bintray-sbt-rpm.repo
+# yum -y install sbt
+# yum -y install git
+# git clone https://github.com/databricks/spark-xml.git
+# cd spark-xml
+# sbt/sbt package
+
+#    echo "# postgresql" && \
+#    apt-get -yq install vim postgresql-9.3 libpostgresql-jdbc-java && \
+#     echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections && \
+
+
+#    echo "#! /bin/sh" > /scripts/install-matplotlib.sh && \
+#    echo "apt-get -y build-dep python-matplotlib" >> /scripts/install-matplotlib.sh && \
+#    echo "pip2 install matplotlib" >> /scripts/install-matplotlib.sh && \
+#    chmod +x /scripts/install-matplotlib.sh && \
