@@ -40,7 +40,7 @@ RUN apt-get update && \
     apt-get -y install oracle-java8-installer build-essential && \
     mkdir /scripts && \
     mkdir /home/dockerdata && \
-    mkdir /data &&
+    mkdir /data && \
     cd /home && \
     wget https://bootstrap.pypa.io/get-pip.py && \
     python get-pip.py && \
