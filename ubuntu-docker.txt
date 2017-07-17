@@ -41,7 +41,6 @@ RUN apt-get update && \
     mkdir /scripts && \
     mkdir /home/dockerdata && \
     mkdir /data &&
-    # ln -s /home/dockerdata /data && \
     cd /home && \
     wget https://bootstrap.pypa.io/get-pip.py && \
     python get-pip.py && \
@@ -260,3 +259,7 @@ ENV PATH $PATH:$JAVA_HOME/bin:/scripts:/home
 #    echo "apt-get -y build-dep python-matplotlib" >> /scripts/install-matplotlib.sh && \
 #    echo "pip2 install matplotlib" >> /scripts/install-matplotlib.sh && \
 #    chmod +x /scripts/install-matplotlib.sh && \
+
+
+#    mkdir /data &&
+#    ln -s /home/dockerdata /data && \
