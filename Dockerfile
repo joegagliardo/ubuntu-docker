@@ -39,7 +39,6 @@ RUN apt-get update && \
     echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections && \
     apt-get -y install oracle-java8-installer build-essential && \
     mkdir /scripts && \
-    mkdir /home/dockerdata && \
     mkdir /data && \
     cd /home && \
     wget https://bootstrap.pypa.io/get-pip.py && \
@@ -73,7 +72,7 @@ RUN apt-get update && \
     echo "mysql-server-5.5 mysql-server/root_password password ${MYSQLROOT_PASSWORD}" | debconf-set-selections && \
     echo "mysql-server-5.5 mysql-server/root_password_again password ${MYSQLROOT_PASSWORD}" | debconf-set-selections && \
     apt-get -y install mysql-server mysql-client libmysql-java && \
-    mkdir /home/dockerdata/mysql && \
+    mkdir /data/mysql && \
     echo "[client]" > /etc/my.cnf && \
     echo "user=root" >> /etc/my.cnf && \
     echo "password=${MYSQLROOT_PASSWORD}" >> /etc/my.cnf && \
@@ -86,9 +85,9 @@ RUN apt-get update && \
     echo "#! /bin/sh" > /scripts/move-mysql.sh && \
     echo "# this is not yet working so don't do it." >> /scripts/move-mysql.sh && \
     echo "/etc/init.d/mysql stop" >> /scripts/move-mysql.sh && \
-    echo "mv /var/lib/mysql /home/dockerdata/mysql" >> /scripts/move-mysql.sh && \
-    echo "ln -s /home/dockerdata/mysql /var/lib/mysql" >> /scripts/move-mysql.sh && \
-    echo "echo \"alias /var/lib/mysql/ -> /home/dockerdata/mysql,\" >> /etc/apparmor.d/tunables/alias" >> /scripts/move-mysql.sh && \
+    echo "mv /var/lib/mysql /data/mysql" >> /scripts/move-mysql.sh && \
+    echo "ln -s /data/mysql /var/lib/mysql" >> /scripts/move-mysql.sh && \
+    echo "echo \"alias /var/lib/mysql/ -> /data/mysql,\" >> /etc/apparmor.d/tunables/alias" >> /scripts/move-mysql.sh && \
     echo "systemctl restart apparmor" >> /scripts/move-mysql.sh && \
     echo "/etc/init.d/mysql start" >> /scripts/move-mysql.sh && \
     chmod +x /scripts/move-mysql.sh && \
