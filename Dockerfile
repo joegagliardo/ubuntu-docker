@@ -132,6 +132,13 @@ RUN apt-get update && \
     echo "I cannot automate some things during the build, but I can pull the image, manually do some things and push" >> /scripts/notes.txt && \
     echo "the image back so they are done. It's time consuming but if I do that, I will indicate here in the notes which" >> /scripts/notes.txt && \
     echo "steps I have done. I will likely move the MySQL database, install matplotlib and R." >> /scripts/notes.txt && \
+	echo "# Final Cleanup" && \
+    apt-get -y clean && \
+    apt-get -y autoremove && \
+    rm -rf /var/lib/apt/lists/* && \
+    echo "*************" 
+
+RUN echo "*************" && \
     echo "" >> /scripts/notes.txt
 
 ENV JAVA_HOME /usr
