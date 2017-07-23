@@ -120,6 +120,7 @@ RUN apt-get update && \
     echo "apt-get update" >> /scripts/install-r.sh && \
     echo "apt-get -y install r-base" >> /scripts/install-r.sh && \
     chmod +x /scripts/install-r.sh && \
+    echo "alias hist='f(){ history | grep \"\$1\";  unset -f f; }; f'" >> ~/.bashrc && \
     apt-get clean && \
     apt-get autoremove && \
     rm -rf /var/lib/apt/lists/* && \
@@ -140,7 +141,7 @@ RUN apt-get update && \
 RUN echo "*************" && \
     echo "" >> /scripts/notes.txt
 
-ENV JAVA_HOME /usr
+ENV JAVA_HOME /usr/lib/jvm/java-8-oracle/
 ENV PATH $PATH:$JAVA_HOME/bin:/scripts:/home
 
 #    apt-get remove scala-library scala && \
