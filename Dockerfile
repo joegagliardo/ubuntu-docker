@@ -5,7 +5,7 @@ EXPOSE 50020 50090 50070 50010 50075 8031 8032 8033 8040 8042 49707 22 8088 8030
 
 
 # MYSQL Passwords
-ARG MYSQLROOT_PASSWORD=
+ARG MYSQLROOT_PASSWORD=rootpassword
 
 USER root
 
@@ -73,6 +73,7 @@ RUN apt-get update && \
     echo "[client]" > /etc/my.cnf && \
     echo "user=root" >> /etc/my.cnf && \
     echo "password=" >> /etc/my.cnf && \
+    echo "" >> /etc/my.cnf && \
     echo "#! /bin/sh" > /scripts/start-mysql.sh && \
     echo "service mysql start" >> /scripts/start-mysql.sh && \
     chmod +x /scripts/start-mysql.sh && \
@@ -82,7 +83,7 @@ RUN apt-get update && \
     usermod -d /var/lib/mysql/ mysql && \
     /scripts/start-mysql.sh && \
     mysqladmin -u root password "${MYSQLROOT_PASSWORD}" && \
-    sed -i "s/password=/password=${MYSQLROOT_PASSWORD}/" /etc/my.cnf && \
+    sed -i 's/password=/password=${MYSQLROOT_PASSWORD}/' /etc/my.cnf && \
     echo "# Postgresql" && \
     DEBIAN_FRONTEND=noninteractive apt-get -yq install postgresql postgresql-contrib postgresql-client && \
     echo "#! /bin/sh" > /scripts/start-postgresql.sh && \
