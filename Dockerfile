@@ -30,23 +30,25 @@ ARG SHA=beb91419245395bd69a4a6edad5ca3ec1a8b64e41457672dc687c173a495f034
 USER root
 
 # Install Dev Tools & Java
-RUN apt-get update && \
-    apt-get -y install curl tar sudo openssh-server openssh-client rsync nano vim software-properties-common git python2.7 gcc apt-utils netcat debconf apt-transport-https && \
-    apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8 && \
+RUN apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8 && \
     add-apt-repository 'deb [arch=amd64,i386,ppc64el] http://ftp.utexas.edu/mariadb/repo/10.1/ubuntu xenial main' && \
     add-apt-repository ppa:webupd8team/java -y && \
+    echo "# R" && \
+    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 && \
+    add-apt-repository 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial/' && \
+    echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections && \
     apt-get update && \
+    apt-get -y install oracle-java8-installer build-essential curl tar sudo openssh-server openssh-client rsync nano vim software-properties-common git python2.7 gcc apt-utils netcat debconf apt-transport-https apt-transport-https r-base nodejs npm aqlite3 libsqlite3-dev && \
+    DEBIAN_FRONTEND=noninteractive apt-get -yq build-dep python-matplotlib mariadb-server mariadb-client && \
     mkdir /scripts && \
     mkdir /data && \
     mkdir /data/mysql && \
     cd /home && \
     ln -s /usr/bin/python2.7 /usr/bin/python && \
-    apt-get update && \
-    echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections && \
-    apt-get -y install oracle-java8-installer build-essential && \
     wget https://bootstrap.pypa.io/get-pip.py && \
     python get-pip.py && \
     python3 get-pip.py && \
+    rm get-pip.py && \
     rm /usr/local/bin/pip && \
     ln -s /usr/local/bin/pip2 /usr/local/bin/pip && \
     mv get-pip.py /scripts && \
@@ -60,16 +62,9 @@ RUN apt-get update && \
     pip3 install cherrypy && \
     pip2 install pymssql && \
     pip3 install pymssql && \
-    DEBIAN_FRONTEND=noninteractive apt-get -yq build-dep python-matplotlib && \
     pip2 install matplotlib && \
     pip3 install matplotlib && \
-    echo "# nodejs" && \
-    apt-get -y install nodejs && \
-    apt-get -y install npm && \
-    echo "# sqlite3" && \
-    apt-get -y install sqlite3 libsqlite3-dev && \
     echo "# MariaDB" && \
-    DEBIAN_FRONTEND=noninteractive apt-get -yq install mariadb-server mariadb-client && \
     echo "[client]" > /etc/my.cnf && \
     echo "user=root" >> /etc/my.cnf && \
     echo "password=" >> /etc/my.cnf && \
@@ -83,19 +78,7 @@ RUN apt-get update && \
     usermod -d /var/lib/mysql/ mysql && \
     /scripts/start-mysql.sh && \
     mysqladmin -u root password "${MYSQLROOT_PASSWORD}" && \
-    sed -i 's/password=/password=${MYSQLROOT_PASSWORD}/' /etc/my.cnf && \
-    echo "# Postgresql" && \
-    DEBIAN_FRONTEND=noninteractive apt-get -yq install postgresql postgresql-contrib postgresql-client && \
-    echo "#! /bin/sh" > /scripts/start-postgresql.sh && \
-    echo "/etc/init.d/postgresql start" >> /scripts/start-postgresql.sh && \
-    chmod +x /scripts/start-postgresql.sh && \
-    echo "#! /bin/sh" > /scripts/postgres-client.sh && \
-    echo "sudo -u postgres psql" >> /scripts/postgres-client.sh && \
-    chmod +x /scripts/postgres-client.sh && \
-    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 && \
-    add-apt-repository 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial/' && \
-	 apt-get update && \
-    apt-get -y install apt-transport-https r-base && \
+    sed -i "s/password=/password=${MYSQLROOT_PASSWORD}/" /etc/my.cnf && \
     echo "# Maven" && \
     echo ${MAVEN_URL} && \ 
     mkdir -p /usr/share/maven /usr/share/maven/ref && \
@@ -144,4 +127,3 @@ ENV PATH $PATH:$JAVA_HOME/bin:/scripts:/home
 #    add-apt-repository 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial/' && \
 #	 apt-get update && \
 #    apt-get -y install r-base && \
-
