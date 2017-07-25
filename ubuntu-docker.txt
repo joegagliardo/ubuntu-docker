@@ -114,24 +114,17 @@ RUN apt-get update && \
     apt-get install -f && \
     rm /home/sbt-${SBT_VERSION}.deb && \
     echo "Install R" && \
-    echo "#! /bin/sh" > /scripts/install-r.sh && \
-    echo "apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9" >> /scripts/install-r.sh && \
-    echo "add-apt-repository 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial/'" >> /scripts/install-r.sh && \
-    echo "apt-get update" >> /scripts/install-r.sh && \
-    echo "apt-get -y install r-base" >> /scripts/install-r.sh && \
-    chmod +x /scripts/install-r.sh && \
+    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 && \
+    add-apt-repository 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial/' && \
+	apt-get update && \
+    apt-get -y install r-base && \
     echo "alias hist='f(){ history | grep \"\$1\";  unset -f f; }; f'" >> ~/.bashrc && \
     apt-get clean && \
     apt-get autoremove && \
     rm -rf /var/lib/apt/lists/* && \
     echo "" > /scripts/notes.txt && \
-    echo "R and Matplotlib for Python 2 could not be installed during the building of the docker image" >> /scripts/notes.txt && \
-    echo "because it prompts for a region and time zone, and I cannot figure out how to script" >> /scripts/notes.txt && \
-    echo "default answers. So if you need either of these then run the corresponding install.sh for it in the /scripts folder" >> /scripts/notes.txt && \
+    echo "I switched to use MariaDB instead of MySQL since it has more features and is better maintanined" >> /scripts/notes.txt && \
     echo "" >> /scripts/notes.txt && \
-    echo "I cannot automate some things during the build, but I can pull the image, manually do some things and push" >> /scripts/notes.txt && \
-    echo "the image back so they are done. It's time consuming but if I do that, I will indicate here in the notes which" >> /scripts/notes.txt && \
-    echo "steps I have done. I will likely move the MySQL database, install matplotlib and R." >> /scripts/notes.txt && \
 	echo "# Final Cleanup" && \
     apt-get -y clean && \
     apt-get -y autoremove && \
@@ -144,3 +137,7 @@ RUN echo "*************" && \
 #ENV JAVA_HOME /usr/lib/jvm/java-8-oracle/
 ENV JAVA_HOME /usr
 ENV PATH $PATH:$JAVA_HOME/bin:/scripts:/home
+
+
+
+
