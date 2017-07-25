@@ -31,7 +31,7 @@ USER root
 
 # Install Dev Tools & Java
 RUN apt-get update && \
-    apt-get -y install curl tar sudo openssh-server openssh-client rsync nano vim software-properties-common git python2.7 gcc apt-utils netcat debconf&& \
+    apt-get -y install curl tar sudo openssh-server openssh-client rsync nano vim software-properties-common git python2.7 gcc apt-utils netcat debconf apt-transport-https && \
     apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8 && \
     add-apt-repository 'deb [arch=amd64,i386,ppc64el] http://ftp.utexas.edu/mariadb/repo/10.1/ubuntu xenial main' && \
     add-apt-repository ppa:webupd8team/java -y && \
@@ -82,7 +82,7 @@ RUN apt-get update && \
     usermod -d /var/lib/mysql/ mysql && \
     /scripts/start-mysql.sh && \
     mysqladmin -u root password "${MYSQLROOT_PASSWORD}" && \
-    sed -i 's/password=/password=${MYSQLROOT_PASSWORD}/' /etc/my.cnf && \
+    sed -i "s/password=/password=${MYSQLROOT_PASSWORD}/" /etc/my.cnf && \
     echo "# Postgresql" && \
     DEBIAN_FRONTEND=noninteractive apt-get -yq install postgresql postgresql-contrib postgresql-client && \
     echo "#! /bin/sh" > /scripts/start-postgresql.sh && \
@@ -91,6 +91,10 @@ RUN apt-get update && \
     echo "#! /bin/sh" > /scripts/postgres-client.sh && \
     echo "sudo -u postgres psql" >> /scripts/postgres-client.sh && \
     chmod +x /scripts/postgres-client.sh && \
+    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 && \
+    add-apt-repository 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial/' && \
+	 apt-get update && \
+    apt-get -y install apt-transport-https r-base && \
     echo "# Maven" && \
     echo ${MAVEN_URL} && \ 
     mkdir -p /usr/share/maven /usr/share/maven/ref && \
@@ -139,3 +143,9 @@ ENV PATH $PATH:$JAVA_HOME/bin:/scripts:/home
 #    add-apt-repository 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial/' && \
 #	 apt-get update && \
 #    apt-get -y install r-base && \
+
+apt-get -y install apt-transport-https
+apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 && \
+    add-apt-repository 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial/' && \
+	 apt-get update && \
+    apt-get -y install apt-transport-https r-base 

@@ -82,7 +82,7 @@ RUN apt-get update && \
     usermod -d /var/lib/mysql/ mysql && \
     /scripts/start-mysql.sh && \
     mysqladmin -u root password "${MYSQLROOT_PASSWORD}" && \
-    sed -i 's/password=/password=${MYSQLROOT_PASSWORD}/' /etc/my.cnf && \
+    sed -i "s/password=/password=${MYSQLROOT_PASSWORD}/" /etc/my.cnf && \
     echo "# Postgresql" && \
     DEBIAN_FRONTEND=noninteractive apt-get -yq install postgresql postgresql-contrib postgresql-client && \
     echo "#! /bin/sh" > /scripts/start-postgresql.sh && \
