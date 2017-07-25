@@ -41,8 +41,8 @@ RUN apt-get update && \
     add-apt-repository 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial/' && \
     echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections && \
     apt-get update && \
-    apt-get -y install oracle-java8-installer apt-transport-https r-base nodejs npm aqlite3 libsqlite3-dev && \
-    DEBIAN_FRONTEND=noninteractive apt-get -yq build-dep python-matplotlib mariadb-server mariadb-client && \
+    apt-get -y install oracle-java8-installer nodejs npm aqlite3 libsqlite3-dev && \
+    DEBIAN_FRONTEND=noninteractive apt-get -yq build-dep python-matplotlib mariadb-server mariadb-client apt-transport-https r-base && \
     mkdir /scripts && \
     mkdir /data && \
     mkdir /data/mysql && \
