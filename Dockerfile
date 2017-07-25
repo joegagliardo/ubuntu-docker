@@ -30,19 +30,16 @@ ARG SHA=beb91419245395bd69a4a6edad5ca3ec1a8b64e41457672dc687c173a495f034
 USER root
 
 # Install Dev Tools & Java
-RUN apt-get update && \
-    apt-get -y install  build-essential curl tar sudo openssh-server openssh-client rsync nano vim software-properties-common git python2.7 gcc netcat debconf && \
-    apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8 && \
+RUN apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8 && \
     add-apt-repository 'deb [arch=amd64,i386,ppc64el] http://ftp.utexas.edu/mariadb/repo/10.1/ubuntu xenial main' && \
     add-apt-repository ppa:webupd8team/java -y && \
-    apt-get update && \
     echo "# R" && \
     apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 && \
     add-apt-repository 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial/' && \
     echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections && \
     apt-get update && \
-    apt-get -y install oracle-java8-installer nodejs npm aqlite3 libsqlite3-dev && \
-    DEBIAN_FRONTEND=noninteractive apt-get -yq build-dep python-matplotlib mariadb-server mariadb-client apt-transport-https r-base && \
+    apt-get -y install oracle-java8-installer build-essential curl tar sudo openssh-server openssh-client rsync nano vim software-properties-common git python2.7 gcc apt-utils netcat debconf apt-transport-https apt-transport-https r-base nodejs npm aqlite3 libsqlite3-dev && \
+    DEBIAN_FRONTEND=noninteractive apt-get -yq build-dep python-matplotlib mariadb-server mariadb-client && \
     mkdir /scripts && \
     mkdir /data && \
     mkdir /data/mysql && \
@@ -105,6 +102,9 @@ RUN apt-get update && \
     apt-get install -f && \
     rm /home/sbt-${SBT_VERSION}.deb && \
     echo "alias hist='f(){ history | grep \"\$1\";  unset -f f; }; f'" >> ~/.bashrc && \
+    apt-get clean && \
+    apt-get autoremove && \
+    rm -rf /var/lib/apt/lists/* && \
     echo "" > /scripts/notes.txt && \
     echo "I switched to use MariaDB instead of MySQL since it has more features and is better maintanined" >> /scripts/notes.txt && \
     echo "" >> /scripts/notes.txt && \
@@ -120,10 +120,3 @@ RUN echo "*************" && \
 #ENV JAVA_HOME /usr/lib/jvm/java-8-oracle/
 ENV JAVA_HOME /usr
 ENV PATH $PATH:$JAVA_HOME/bin:/scripts:/home
-
-
-#    echo "Install R" && \
-#    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 && \
-#    add-apt-repository 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial/' && \
-#	 apt-get update && \
-#    apt-get -y install r-base && \
