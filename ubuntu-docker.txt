@@ -91,6 +91,7 @@ RUN apt-get update && \
     echo "systemctl restart apparmor" >> /scripts/move-mysql.sh && \
     echo "/etc/init.d/mysql start" >> /scripts/move-mysql.sh && \
     chmod +x /scripts/move-mysql.sh && \
+    usermod -d /var/lib/mysql/ mysql && \
     echo "# Maven" && \
     echo ${MAVEN_URL} && \ 
     mkdir -p /usr/share/maven /usr/share/maven/ref && \
@@ -141,7 +142,8 @@ RUN apt-get update && \
 RUN echo "*************" && \
     echo "" >> /scripts/notes.txt
 
-ENV JAVA_HOME /usr/lib/jvm/java-8-oracle/
+#ENV JAVA_HOME /usr/lib/jvm/java-8-oracle/
+ENV JAVA_HOME /usr
 ENV PATH $PATH:$JAVA_HOME/bin:/scripts:/home
 
 #    apt-get remove scala-library scala && \
