@@ -60,11 +60,8 @@ RUN apt-get update && \
     pip3 install cherrypy && \
     pip2 install pymssql && \
     pip3 install pymssql && \
-    echo "#! /bin/sh" > /scripts/install-matplotlib.sh && \
-    echo "apt-get update"  >> /scripts/install-matplotlib.sh && \
-    echo "apt-get -y build-dep python-matplotlib" >> /scripts/install-matplotlib.sh && \
-    echo "pip2 install matplotlib" >> /scripts/install-matplotlib.sh && \
-    chmod +x /scripts/install-matplotlib.sh && \
+    DEBIAN_FRONTEND=noninteractive apt-get -yq build-dep python-matplotlib && \
+    pip2 install matplotlib && \
     pip3 install matplotlib && \
     echo "# nodejs" && \
     apt-get -y install nodejs && \
@@ -75,7 +72,7 @@ RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get -yq install mariadb-server mariadb-client && \
     echo "[client]" > /etc/my.cnf && \
     echo "user=root" >> /etc/my.cnf && \
-    echo "password=${MYSQLROOT_PASSWORD}" >> /etc/my.cnf && \
+    echo "password=" >> /etc/my.cnf && \
     echo "#! /bin/sh" > /scripts/start-mysql.sh && \
     echo "service mysql start" >> /scripts/start-mysql.sh && \
     chmod +x /scripts/start-mysql.sh && \
@@ -83,6 +80,17 @@ RUN apt-get update && \
     echo "service mysql stop" >> /scripts/stop-mysql.sh && \
     chmod +x /scripts/stop-mysql.sh && \
     usermod -d /var/lib/mysql/ mysql && \
+    /scripts/start-mysql.sh && \
+    mysqladmin -u root password "${MYSQLROOT_PASSWORD} && \
+    sed -i 's/password=/password=${MYSQLROOT_PASSWORD}/' /etc/my.cnf && \
+    echo "# Postgresql' && \
+    DEBIAN_FRONTEND=noninteractive apt-get -yq install postgresql postgresql-contrib postgresql-client && \
+    echo "#! /bin/sh" > /scripts/start-postgresql.sh && \
+    echo "/etc/init.d/postgresql start" >> /scripts/start-postgresql.sh && \
+    chmod +x /scripts/start-postgresql.sh && \
+    echo "#! /bin/sh" > /scripts/postgres-client.sh && \
+    echo "sudo -u postgres psql" >> /scripts/postgres-client.sh && \
+    chmod +x /scripts/postgres-client.sh && \
     echo "# Maven" && \
     echo ${MAVEN_URL} && \ 
     mkdir -p /usr/share/maven /usr/share/maven/ref && \
@@ -265,6 +273,9 @@ ENV PATH $PATH:$JAVA_HOME/bin:/scripts:/home
 #    ln -s /home/dockerdata /data && \
 
 # sudo DEBIAN_FRONTEND=noninteractive apt-get -yq install postgresql postgresql-contrib postgresql-client
+#/etc/init.d/postgresql start
+#sudo -u postgres psql
+
 # apt-get install -y debconf-utils
 
 
@@ -285,3 +296,17 @@ ENV PATH $PATH:$JAVA_HOME/bin:/scripts:/home
 #$ sudo apt-get update
 #$ sudo apt-get install mariadb-server
 
+
+#DEBIAN_FRONTEND=noninteractive apt-get -yq build-dep python-matplotlib
+#mysqladmin -u root password "${MYSQLROOT_PASSWORD}
+#sed -i 's/password=/password=${MYSQLROOT_PASSWORD}/' /etc/my.cnf 
+#    echo "password=${MYSQLROOT_PASSWORD}" >> /etc/my.cnf && \
+#sed -i 's/password=/password=rootpassword/' etc/my/cnf 
+
+
+
+#    echo "#! /bin/sh" > /scripts/install-matplotlib.sh && \
+#    echo "apt-get update"  >> /scripts/install-matplotlib.sh && \
+#    echo "apt-get -y build-dep python-matplotlib" >> /scripts/install-matplotlib.sh && \
+#    echo "pip2 install matplotlib" >> /scripts/install-matplotlib.sh && \
+#    chmod +x /scripts/install-matplotlib.sh && \
