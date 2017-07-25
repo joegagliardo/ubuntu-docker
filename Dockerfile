@@ -113,11 +113,6 @@ RUN apt-get update && \
     cd /home && \
     apt-get install -f && \
     rm /home/sbt-${SBT_VERSION}.deb && \
-    echo "Install R" && \
-    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 && \
-    add-apt-repository 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial/' && \
-	apt-get update && \
-    apt-get -y install r-base && \
     echo "alias hist='f(){ history | grep \"\$1\";  unset -f f; }; f'" >> ~/.bashrc && \
     apt-get clean && \
     apt-get autoremove && \
@@ -139,5 +134,8 @@ ENV JAVA_HOME /usr
 ENV PATH $PATH:$JAVA_HOME/bin:/scripts:/home
 
 
-
-
+#    echo "Install R" && \
+#    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 && \
+#    add-apt-repository 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial/' && \
+#	 apt-get update && \
+#    apt-get -y install r-base && \
