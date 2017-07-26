@@ -31,7 +31,8 @@ USER root
 
 # Install Dev Tools & Java
 RUN apt-get update && \
-    apt-get -y install build-essential curl tar sudo openssh-server openssh-client rsync nano vim software-properties-common git python2.7 gcc apt-utils netcat debconf && \
+    apt-get -y install build-essential curl tar sudo openssh-server openssh-client rsync nano vim \
+               software-properties-common git python2.7 gcc apt-utils netcat debconf && \
     apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8 && \
     add-apt-repository 'deb [arch=amd64,i386,ppc64el] http://ftp.utexas.edu/mariadb/repo/10.1/ubuntu xenial main' && \
     add-apt-repository ppa:webupd8team/java -y && \
@@ -41,6 +42,7 @@ RUN apt-get update && \
     echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections && \
     apt-get update && \
     apt-get -y install oracle-java8-installer apt-transport-https nodejs npm sqlite3 libsqlite3-dev && \
+    apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get -yq build-dep python-matplotlib mariadb-server mariadb-client r-base && \
     mkdir /scripts && \
     mkdir /data && \
