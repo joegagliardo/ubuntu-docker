@@ -80,7 +80,6 @@ RUN apt-get update && \
     echo "mysql-server-5.5 mysql-server/root_password password ${MYSQLROOT_PASSWORD}" | debconf-set-selections && \
     echo "mysql-server-5.5 mysql-server/root_password_again password ${MYSQLROOT_PASSWORD}" | debconf-set-selections && \
     apt-get -y install mysql-server mysql-client libmysql-java && \
-    mkdir /data && \
     echo "[client]" > /etc/my.cnf && \
     echo "user=root" >> /etc/my.cnf && \
     echo "password=${MYSQLROOT_PASSWORD}" >> /etc/my.cnf && \
