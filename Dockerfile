@@ -42,14 +42,14 @@ RUN apt-get update && \
     mkdir /data/mysql && \
     cd /home && \
     echo "# ---------------------------------------------" && \
-    echo "# java" && \
+    echo "# Java" && \
     echo "# ---------------------------------------------" && \
     add-apt-repository ppa:webupd8team/java -y && \
     apt-get update && \
     echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections && \
     apt-get -y install oracle-java8-installer build-essential && \
     echo "# ---------------------------------------------" && \
-    echo "# python" && \
+    echo "# Python" && \
     echo "# ---------------------------------------------" && \
     ln -s /usr/bin/python2.7 /usr/bin/python && \
     wget https://bootstrap.pypa.io/get-pip.py && \
@@ -72,7 +72,7 @@ RUN apt-get update && \
     pip2 install matplotlib && \
     pip3 install matplotlib && \
     echo "# ---------------------------------------------" && \
-    echo "# nodejs & sqlite3" && \
+    echo "# NodeJS & Sqlite3" && \
     echo "# ---------------------------------------------" && \
     apt-get -y install nodejs npm sqlite3 libsqlite3-dev && \
     echo "# ---------------------------------------------" && \
@@ -81,17 +81,16 @@ RUN apt-get update && \
     echo "mysql-server-5.5 mysql-server/root_password password ${MYSQLROOT_PASSWORD}" | debconf-set-selections && \
     echo "mysql-server-5.5 mysql-server/root_password_again password ${MYSQLROOT_PASSWORD}" | debconf-set-selections && \
     apt-get -y install mysql-server mysql-client libmysql-java && \
-    mkdir /home/host/mysql && \
+    mkdir /data/mysql && \
     echo "[client]" > /etc/my.cnf && \
     echo "user=root" >> /etc/my.cnf && \
     echo "password=${MYSQLROOT_PASSWORD}" >> /etc/my.cnf && \
-    echo "#! /bin/sh" > /home/scripts/start-mysql.sh && \
-    echo "/etc/init.d/mysql start" >> /home/scripts/start-mysql.sh && \
-    chmod +x /home/scripts/start-mysql.sh && \
-    echo "#! /bin/sh" > /home/scripts/stop-mysql.sh && \
-    echo "/etc/init.d/mysql stop" >> /home/scripts/stop-mysql.sh && \
-    chmod +x /home/scripts/stop-mysql.sh && \
-    /etc/init.d/mysql start && \
+    echo "#! /bin/sh" > /scripts/start-mysql.sh && \
+    echo "/etc/init.d/mysql start" >> /scripts/start-mysql.sh && \
+    chmod +x /scripts/start-mysql.sh && \
+    echo "#! /bin/sh" > /scripts/stop-mysql.sh && \
+    echo "/etc/init.d/mysql stop" >> /scripts/stop-mysql.sh && \
+    chmod +x /scripts/stop-mysql.sh && \
     echo "# ---------------------------------------------" && \
     echo "# R" && \
     echo "# ---------------------------------------------" && \
