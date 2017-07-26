@@ -39,7 +39,6 @@ RUN apt-get update && \
     apt-get update && \
     mkdir /scripts && \
     mkdir /data && \
-    mkdir /data/mysql && \
     cd /home && \
     echo "# ---------------------------------------------" && \
     echo "# Java" && \
