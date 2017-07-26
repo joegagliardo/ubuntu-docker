@@ -31,19 +31,27 @@ USER root
 
 # Install Dev Tools & Java
 RUN apt-get update && \
+    echo "# ---------------------------------------------" && \
+    echo "# OS tools" && \
+    echo "# ---------------------------------------------" && \
     apt-get -y install curl tar sudo openssh-server openssh-client rsync nano vim software-properties-common git python2.7 gcc apt-utils netcat debconf apt-transport-https && \
     apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8 && \
-    add-apt-repository 'deb [arch=amd64,i386,ppc64el] http://ftp.utexas.edu/mariadb/repo/10.1/ubuntu xenial main' && \
-    add-apt-repository ppa:webupd8team/java -y && \
     apt-get update && \
     mkdir /scripts && \
     mkdir /data && \
     mkdir /data/mysql && \
     cd /home && \
-    ln -s /usr/bin/python2.7 /usr/bin/python && \
+    echo "# ---------------------------------------------" && \
+    echo "# java" && \
+    echo "# ---------------------------------------------" && \
+    add-apt-repository ppa:webupd8team/java -y && \
     apt-get update && \
     echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections && \
     apt-get -y install oracle-java8-installer build-essential && \
+    echo "# ---------------------------------------------" && \
+    echo "# python" && \
+    echo "# ---------------------------------------------" && \
+    ln -s /usr/bin/python2.7 /usr/bin/python && \
     wget https://bootstrap.pypa.io/get-pip.py && \
     python get-pip.py && \
     python3 get-pip.py && \
@@ -63,33 +71,37 @@ RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get -yq build-dep python-matplotlib && \
     pip2 install matplotlib && \
     pip3 install matplotlib && \
-    echo "# nodejs" && \
-    apt-get -y install nodejs && \
-    apt-get -y install npm && \
-    echo "# sqlite3" && \
-    apt-get -y install sqlite3 libsqlite3-dev && \
-    echo "# MariaDB" && \
-    DEBIAN_FRONTEND=noninteractive apt-get -yq install mariadb-server mariadb-client && \
+    echo "# ---------------------------------------------" && \
+    echo "# nodejs & sqlite3" && \
+    echo "# ---------------------------------------------" && \
+    apt-get -y install nodejs npm sqlite3 libsqlite3-dev && \
+    echo "# ---------------------------------------------" && \
+    echo "# MYSQL" && \
+    echo "# ---------------------------------------------" && \
+    echo "mysql-server-5.5 mysql-server/root_password password ${MYSQLROOT_PASSWORD}" | debconf-set-selections && \
+    echo "mysql-server-5.5 mysql-server/root_password_again password ${MYSQLROOT_PASSWORD}" | debconf-set-selections && \
+    apt-get -y install mysql-server mysql-client libmysql-java && \
+    mkdir /home/host/mysql && \
     echo "[client]" > /etc/my.cnf && \
     echo "user=root" >> /etc/my.cnf && \
-    echo "password=" >> /etc/my.cnf && \
-    echo "" >> /etc/my.cnf && \
-    echo "#! /bin/sh" > /scripts/start-mysql.sh && \
-    echo "service mysql start" >> /scripts/start-mysql.sh && \
-    chmod +x /scripts/start-mysql.sh && \
-    echo "#! /bin/sh" > /scripts/stop-mysql.sh && \
-    echo "service mysql stop" >> /scripts/stop-mysql.sh && \
-    chmod +x /scripts/stop-mysql.sh && \
-    usermod -d /var/lib/mysql/ mysql && \
-    /scripts/start-mysql.sh && \
-    mysqladmin -u root password "${MYSQLROOT_PASSWORD}" && \
-    sed -i "s/password=/password=${MYSQLROOT_PASSWORD}/" /etc/my.cnf && \
+    echo "password=${MYSQLROOT_PASSWORD}" >> /etc/my.cnf && \
+    echo "#! /bin/sh" > /home/scripts/start-mysql.sh && \
+    echo "/etc/init.d/mysql start" >> /home/scripts/start-mysql.sh && \
+    chmod +x /home/scripts/start-mysql.sh && \
+    echo "#! /bin/sh" > /home/scripts/stop-mysql.sh && \
+    echo "/etc/init.d/mysql stop" >> /home/scripts/stop-mysql.sh && \
+    chmod +x /home/scripts/stop-mysql.sh && \
+    /etc/init.d/mysql start && \
+    echo "# ---------------------------------------------" && \
     echo "# R" && \
+    echo "# ---------------------------------------------" && \
     apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 && \
     add-apt-repository 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial/' && \
     apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get -y install apt-transport-https r-base && \
+    echo "# ---------------------------------------------" && \
     echo "# Maven" && \
+    echo "# ---------------------------------------------" && \
     echo ${MAVEN_URL} && \ 
     mkdir -p /usr/share/maven /usr/share/maven/ref && \
     curl -fsSL -o /tmp/apache-maven.tar.gz ${MAVEN_URL} && \ 
@@ -97,13 +109,17 @@ RUN apt-get update && \
     tar -xzf /tmp/apache-maven.tar.gz -C /usr/share/maven --strip-components=1 && \
     rm -f /tmp/apache-maven.tar.gz && \
     ln -s /usr/share/maven/bin/mvn /usr/bin/mvn && \
+    echo "# ---------------------------------------------" && \
     echo "# Scala" && \
+    echo "# ---------------------------------------------" && \
     echo ${SCALA_URL} && \
     cd /home && \
     wget ${SCALA_URL} && \
     dpkg -i scala-${SCALA_VERSION}.deb && \
     rm scala-${SCALA_VERSION}.deb && \
+    echo "# ---------------------------------------------" && \
     echo "# SBT" && \
+    echo "# ---------------------------------------------" && \
     echo ${SBT_URL} && \
     cd /home && \
     wget ${SBT_URL} && \
@@ -111,14 +127,16 @@ RUN apt-get update && \
     cd /home && \
     apt-get install -f && \
     rm /home/sbt-${SBT_VERSION}.deb && \
+    echo "# ---------------------------------------------" && \
+    echo "# Notes" && \
+    echo "# ---------------------------------------------" && \
     echo "alias hist='f(){ history | grep \"\$1\";  unset -f f; }; f'" >> ~/.bashrc && \
-    apt-get clean && \
-    apt-get autoremove && \
-    rm -rf /var/lib/apt/lists/* && \
     echo "" > /scripts/notes.txt && \
     echo "I switched to use MariaDB instead of MySQL since it has more features and is better maintanined" >> /scripts/notes.txt && \
     echo "" >> /scripts/notes.txt && \
+    echo "# ---------------------------------------------" && \
 	echo "# Final Cleanup" && \
+    echo "# ---------------------------------------------" && \
     apt-get -y clean && \
     apt-get -y autoremove && \
     rm -rf /var/lib/apt/lists/* && \
@@ -127,8 +145,8 @@ RUN apt-get update && \
 RUN echo "*************" && \
     echo "" >> /scripts/notes.txt
 
-#ENV JAVA_HOME /usr/lib/jvm/java-8-oracle/
-ENV JAVA_HOME /usr
+ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
+#ENV JAVA_HOME /usr
 ENV PATH $PATH:$JAVA_HOME/bin:/scripts:/home
 
 
@@ -147,3 +165,5 @@ ENV PATH $PATH:$JAVA_HOME/bin:/scripts:/home
 #    echo "#! /bin/sh" > /scripts/postgres-client.sh && \
 #    echo "sudo -u postgres psql" >> /scripts/postgres-client.sh && \
 #    chmod +x /scripts/postgres-client.sh && \
+
+
