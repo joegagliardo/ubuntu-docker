@@ -80,15 +80,22 @@ RUN apt-get update && \
     echo "mysql-server-5.5 mysql-server/root_password password ${MYSQLROOT_PASSWORD}" | debconf-set-selections && \
     echo "mysql-server-5.5 mysql-server/root_password_again password ${MYSQLROOT_PASSWORD}" | debconf-set-selections && \
     apt-get -y install mysql-server mysql-client libmysql-java && \
-    mkdir /data/mysql && \
+    mkdir /data && \
     echo "[client]" > /etc/my.cnf && \
     echo "user=root" >> /etc/my.cnf && \
     echo "password=${MYSQLROOT_PASSWORD}" >> /etc/my.cnf && \
+    echo "" >> /etc/my.cnf && \
+    echo "[mysqld]" >> /etc/my.cnf && \
+    echo "datadir=/data/mysql" >> /etc/my.cnf && \
+    mysqld --defaults-file=/etc/my.cnf --initialize-insecure --user=mysql --explicit_defaults_for_timestamp && \
+    usermod -d /data/mysql/ mysql && \
+    sudo chown -R mysql /data/mysql && \
+    sudo chgrp -R mysql /data/mysql && \
     echo "#! /bin/sh" > /scripts/start-mysql.sh && \
-    echo "/etc/init.d/mysql start" >> /scripts/start-mysql.sh && \
+    echo "sudo /etc/init.d/mysql start" >> /scripts/start-mysql.sh && \
     chmod +x /scripts/start-mysql.sh && \
     echo "#! /bin/sh" > /scripts/stop-mysql.sh && \
-    echo "/etc/init.d/mysql stop" >> /scripts/stop-mysql.sh && \
+    echo "sudo /etc/init.d/mysql stop" >> /scripts/stop-mysql.sh && \
     chmod +x /scripts/stop-mysql.sh && \
     echo "# ---------------------------------------------" && \
     echo "# R" && \
@@ -130,7 +137,6 @@ RUN apt-get update && \
     echo "# ---------------------------------------------" && \
     echo "alias hist='f(){ history | grep \"\$1\";  unset -f f; }; f'" >> ~/.bashrc && \
     echo "" > /scripts/notes.txt && \
-    echo "I switched to use MariaDB instead of MySQL since it has more features and is better maintanined" >> /scripts/notes.txt && \
     echo "" >> /scripts/notes.txt && \
     echo "# ---------------------------------------------" && \
 	echo "# Final Cleanup" && \
@@ -164,4 +170,17 @@ ENV PATH $PATH:$JAVA_HOME/bin:/scripts:/home
 #    echo "sudo -u postgres psql" >> /scripts/postgres-client.sh && \
 #    chmod +x /scripts/postgres-client.sh && \
 
+
+#chmod 600 /etc/mysql/my.cnf
+#chown mysql:mysql /etc/my.cnf
+#sudo chown mysql:root /var/lib/mysql/ -R
+#sudo chmod g+rw /var/lib/mysql/ -R
+
+
+#vi /etc/mysql/my.cnf
+#You will find the lines below top in your configuration file
+
+#[client]
+#port            = 3306
+#socket          = /var/run/mysqld/mysqld.sock
 
