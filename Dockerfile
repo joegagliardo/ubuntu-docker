@@ -5,7 +5,7 @@ EXPOSE 50020 50090 50070 50010 50075 8031 8032 8033 8040 8042 49707 22 8088 8030
 
 
 # MYSQL Passwords
-ARG MYSQLROOT_PASSWORD=rootpassword
+ARG MYSQLROOT_PASSWORD=
 
 USER root
 
@@ -100,7 +100,7 @@ RUN apt-get update && \
     apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 && \
     add-apt-repository 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial/' && \
     apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get -y install apt-transport-https r-base && \
+    DEBIAN_FRONTEND=noninteractive apt-get -y install apt-transport-https r-base r-base-core r-recommended r-base-html && \
     echo "# ---------------------------------------------" && \
     echo "# Maven" && \
     echo "# ---------------------------------------------" && \
