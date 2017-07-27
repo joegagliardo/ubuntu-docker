@@ -49,19 +49,8 @@ RUN apt-get update && \
     echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections && \
     apt-get -y install oracle-java8-installer build-essential && \
     echo "# ---------------------------------------------" && \
-    echo "# R" && \
-    echo "# ---------------------------------------------" && \
-    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 && \
-    add-apt-repository 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial/' && \
-    apt-get update && \
-    cd /home && \
-    wget http://mirrors.kernel.org/ubuntu/pool/main/libp/libpng/libpng12-0_1.2.54-1ubuntu1_amd64.deb && \
-    dpkg -i libpng12-0_1.2.54-1ubuntu1_amd64.deb && \
-    DEBIAN_FRONTEND=noninteractive apt-get -y install r-base r-base-core r-recommended r-base-html && \
-    echo "# ---------------------------------------------" && \
     echo "# Python" && \
     echo "# ---------------------------------------------" && \
-    ln -s /usr/bin/python2.7 /usr/bin/python && \
     wget https://bootstrap.pypa.io/get-pip.py && \
     python get-pip.py && \
     python3 get-pip.py && \
@@ -85,6 +74,16 @@ RUN apt-get update && \
     echo "# NodeJS & Sqlite3" && \
     echo "# ---------------------------------------------" && \
     apt-get -y install nodejs npm sqlite3 libsqlite3-dev && \
+    echo "# ---------------------------------------------" && \
+    echo "# R" && \
+    echo "# ---------------------------------------------" && \
+    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 && \
+    add-apt-repository 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial/' && \
+    apt-get update && \
+    cd /home && \
+    wget http://mirrors.kernel.org/ubuntu/pool/main/libp/libpng/libpng12-0_1.2.54-1ubuntu1_amd64.deb && \
+    dpkg -i libpng12-0_1.2.54-1ubuntu1_amd64.deb && \
+    DEBIAN_FRONTEND=noninteractive apt-get -y install r-base r-base-core r-recommended r-base-html && \
     echo "# ---------------------------------------------" && \
     echo "# MYSQL" && \
     echo "# ---------------------------------------------" && \
@@ -200,4 +199,5 @@ ENV PATH $PATH:$JAVA_HOME/bin:/scripts:/home
     
 #    sudo chown -R mysql /data/mysql && \
 #    sudo chgrp -R mysql /data/mysql && \
+#    ln -s /usr/bin/python2.7 /usr/bin/python && \
 
