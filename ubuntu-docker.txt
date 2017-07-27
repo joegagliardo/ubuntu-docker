@@ -1,4 +1,4 @@
-FROM ubuntu:16.04
+FROM ubuntu:17.04
 MAINTAINER joegagliardo
 
 EXPOSE 50020 50090 50070 50010 50075 8031 8032 8033 8040 8042 49707 22 8088 8030
@@ -79,7 +79,7 @@ RUN apt-get update && \
     echo "# ---------------------------------------------" && \
     echo "mysql-server-5.5 mysql-server/root_password password ${MYSQLROOT_PASSWORD}" | debconf-set-selections && \
     echo "mysql-server-5.5 mysql-server/root_password_again password ${MYSQLROOT_PASSWORD}" | debconf-set-selections && \
-    apt-get -y install mysql-server mysql-client libmysql-java && \
+    DEBIAN_FRONTEND=noninteractive apt-get -y install mysql-server mysql-client libmysql-java && \
     echo "[client]" > /etc/my.cnf && \
     echo "user=root" >> /etc/my.cnf && \
     echo "password=${MYSQLROOT_PASSWORD}" >> /etc/my.cnf && \
@@ -87,16 +87,13 @@ RUN apt-get update && \
     echo "[mysqld]" >> /etc/my.cnf && \
     echo "datadir=/data/mysql" >> /etc/my.cnf && \
     mysqld --defaults-file=/etc/my.cnf --initialize-insecure --user=mysql --explicit_defaults_for_timestamp && \
-    sudo chown -R mysql /data/mysql && \
-    sudo chgrp -R mysql /data/mysql && \
     usermod -d /data/mysql/ mysql && \
     echo "#! /bin/sh" > /scripts/start-mysql.sh && \
-    echo "sudo /etc/init.d/mysql start" >> /scripts/start-mysql.sh && \
+    echo "/etc/init.d/mysql start" >> /scripts/start-mysql.sh && \
     chmod +x /scripts/start-mysql.sh && \
     echo "#! /bin/sh" > /scripts/stop-mysql.sh && \
-    echo "sudo /etc/init.d/mysql stop" >> /scripts/stop-mysql.sh && \
+    echo "/etc/init.d/mysql stop" >> /scripts/stop-mysql.sh && \
     chmod +x /scripts/stop-mysql.sh && \
-    sudo ln -s /tmp/mysql.sock /var/mysql/mysql.sock && \
     echo "# ---------------------------------------------" && \
     echo "# R" && \
     echo "# ---------------------------------------------" && \
@@ -192,3 +189,11 @@ ENV PATH $PATH:$JAVA_HOME/bin:/scripts:/home
 #    sudo chgrp -R mysql /data/mysql && \
 #    usermod -d /data/mysql/ mysql
     
+#sudo mkdir /var/mysql
+#ln -s /tmp/mysql.sock /var/mysql/mysql.sock 
+
+#    ln -s /tmp/mysql.sock /var/mysql/mysql.sock && \
+    
+#    sudo chown -R mysql /data/mysql && \
+#    sudo chgrp -R mysql /data/mysql && \
+

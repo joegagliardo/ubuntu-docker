@@ -1,0 +1,500 @@
+  273  python
+  274  ls
+  275  ls -l
+  276  ls -l p*
+  277  python
+  278  python3
+  279  cd ~/mypackage/
+  280  ls
+  281  ls Working/
+  282  ls
+  283  cd ~
+  284  ls tmp*
+  285  cat tmpUHfgqo 
+  286  ls tmp*
+  287  python3
+  288  pip
+  289  pip -version
+  290  pip --version
+  291  pip2
+  292  pip2 --version
+  293  pip3 --version
+  294  pip install cherrypy
+  295  cd ~/Downloads/CherryPy-10.2.2
+  296  ls
+  297  python setup.py install
+  298  python
+  299  python
+  300  python
+  301  alias
+  302  cd /home
+  303  ls
+  304  /users/joey/Dev/AutoBrake/AutoBrake.py '/Users/joey/Downloads/Vuze/Done/Conv'
+  305  alias
+  306  docker ps -a
+  307  start-bd
+  308  alias
+  309  dbash bigdata-client
+  310  wget ${MONGO_HADOOP_CORE_URL}
+  311  dbash bigdata-client
+  312  cd ~/Dev
+  313  ls
+  314  cd bigdata-docker
+  315  ls
+  316  cp bigdata-docker3.txt Dockerfile 
+  317  cp bigdata-docker3.txt Dockerfile 
+  318  cp bigdata-docker3.txt Dockerfile 
+  319  cp bigdata-docker3.txt Dockerfile 
+  320  cp bigdata-docker3.txt Dockerfile 
+  321  cp bigdata-docker3.txt Dockerfile 
+  322  /users/joey/Dev/AutoBrake/AutoBrake.py '/Users/joey/Downloads/Vuze/Done/Conv'
+  323  docker images
+  324  docker pull joegagliardo/bigdata
+  325  newbd
+  326  new-bd
+  327  start-bd
+  328  cd /Volumwa
+  329  cd /Volumes
+  330  ls
+  331  ls Data
+  332  ls Data-1
+  333  ls Data-2
+  334  ls Data
+  335  ls Data/ARQTimeCapsulePro/
+  336  ls
+  337  ls Data-1
+  338  ls Data-2
+  339  ls Data-3
+  340  ls -l Data-3
+  341  sudo rm Data
+  342  ls
+  343  ls -l
+  344  pwd
+  345  ls Data
+  346  rm -rf Data
+  347  sudo rm -rf Data
+  348  ls
+  349  ls SeagateBlack/
+  350  sudo rm -rd SeagateBlack/
+  351  ls
+  352  ls MobileBackups/
+  353  ls
+  354  sudo mv Data RebelCapsuleData
+  355  ls
+  356  ls RebelCapsuleData/
+  357  ls
+  358  sudo mv Data OldTimeCapsuleData
+  359  ls
+  360  ls -l
+  361  cd /Volumes/Data
+  362  ls -l
+  363  ls Data
+  364  sudo ls Data
+  365  ls -l
+  366  sudo rm -rd Data
+  367  ls
+  368  cd /Volumes/
+  369  ls
+  370  ls
+  371  ls -l
+  372  ls Data
+  373  sudo ls Data
+  374  ls Data-1
+  375  sudo ln -s Data-1/ RebelCapsuleData
+  376  ls
+  377  ls
+  378  ls Data-2
+  379  sudo ln -s Data-2 OldTimeCapsuleData
+  380  alias
+  381  dbash bigdata-client
+  382  cd /Volumes/
+  383  ls
+  384  ls Data-1
+  385  sudo ls Data-1
+  386  sudo ls Data-2
+  387  sudo ls Data-3
+  388  ls
+  389  ls Data-1
+  390  sudo ls Data-1
+  391  sudo ls Data-2
+  392  ls
+  393  sudo ls Data-1
+  394  sudo ls Data-1/
+  395  sudo ls Data-1/ARQRebelCapsulePro
+  396  ls
+  397  ls Data
+  398  ls
+  399  ls
+  400  ls
+  401  ls
+  402  ls
+  403  ls
+  404  ls
+  405  ls
+  406  ls
+  407  ls
+  408  ls
+  409  ls
+  410  ls
+  411  alias
+  412  dbase bigdata-client
+  413  dbash bigdata-client
+  414  exit
+  415  alias
+  416  docker images
+  417  alias
+  418  docker ps -a
+  419  docker ps -a
+  420  docker start joegagliardo/bigdata
+  421  docker start joegagliardo/bigdata-client
+  422  start-bd
+  423  start-bd
+  424  start-bd
+  425  alias
+  426  dbase bigdata-client
+  427  dbash bigdata-client
+  428  dbash bigdata-client
+  429  exit
+  430  dbash bigdata-client
+  431  start-bd
+  432  ssh student@192.168.29.152
+  433  docker ps
+  434  docker ps -a
+  435  cd /Volumes
+  436  ls
+  437  ln -s SeagateBlack/ SeagateBlack\ 1/
+  438  ls
+  439  ln -s SeagateBlack/ "SeagateBlack 1"
+  440  sudo ln -s SeagateBlack/ "SeagateBlack 1"
+  441  cd /Volumes
+  442  ls
+  443  ls JoeyRC
+  444  ls JoeyRC-1
+  445  ls
+  446  sudo rm -r JoeyRC
+  447  sudo rm -r JoeyRC-1
+  448  ls
+  449  ls
+  450  cd /Volumes
+  451  ls
+  452  cd ~/Library/Arq/
+  453  ls
+  454  less config
+  455  ls config
+  456  less config/targets/
+  457  ls config/targets/
+  458  cat config/targets/10F5FFCF-F1B9-4458-857A-A296AEA3C44E.target 
+  459  ls
+  460  cd config
+  461  ls
+  462  cd targets/
+  463  ls
+  464  cp 10F5FFCF-F1B9-4458-857A-A296AEA3C44E.target 10F5FFCF-F1B9-4458-857A-A296AEA3C44E.target.bak
+  465  nano 10F5FFCF-F1B9-4458-857A-A296AEA3C44E.target
+  466  ls /Volumes/
+  467  als
+  468  ls
+  469  docker images
+  470  docker run --name bigdata-client -p 50070:50070 -p 8088:8088 -p 10020:10020 -p 9042:9042 -it joegagliardo/bigdata /etc/bootstrap.sh -bash
+  471  alias
+  472  start-bd 
+  473  ping rebelserver.local
+  474  alias
+  475  cd ~/Dev/ubuntu-docker/
+  476  ls
+  477  cp ubuntu-docker.txt Dockerfile 
+  478  cp ubuntu-docker.txt Dockerfile 
+  479  cp ubuntu-docker.txt Dockerfile 
+  480  ping rebelserver.local
+  481  ls
+  482  docker
+  483  docker images
+  484  alias
+  485  sudo nano ~/.bash_profile
+  486  drm bigdata-client
+  487  source ~/.bash_profile
+  488  alias
+  489  new-bd
+  490  start-bd
+  491  docker images
+  492  docker ps -a
+  493  alias
+  494  drm bigdata-client
+  495  docker ps -a
+  496  docker pull joegagliardo/bigdata
+  497  sudo cp /Volumes/Macintosh\ HD\ 1/Users/joey/Downloads/VuzeDone/XXXX /Volumes/SeagateBlack/June2017/XXXXX 
+  498  sudo cp -r /Volumes/Macintosh\ HD\ 1/Users/joey/Downloads/VuzeDone/XXXX /Volumes/SeagateBlack/June2017/XXXXX 
+  499  sudo rm /Volumes/Macintosh\ HD\ 1/Users/joey/Downloads/VuzeDone/XXXX 
+  500  sudo rm -r /Volumes/Macintosh\ HD\ 1/Users/joey/Downloads/VuzeDone/XXXX 
+  501  docker images
+  502  newbd
+  503  alias
+  504  new-bd
+  505  alias
+  506  hadoop fs -ls /
+  507  cd ~/Dev/bigdata
+  508  cd ~/Dev/bigdata-docker
+  509  ls
+  510  cp bigdata-docker.txt Dockerfile 
+  511  cp bigdata-docker.txt Dockerfile 
+  512  cp bigdata-docker.txt Dockerfile 
+  513  cd ~/Dev/bigdata-docker
+  514  ls
+  515  cat .gitignore 
+  516  git add datasets/\\*
+  517  git add datasets --all
+  518  cd datasets/
+  519  ls
+  520  git add northwind
+  521  cd ..
+  522  pwd
+  523  git add .
+  524  git add -f datasets 
+  525  find . -name ".gitignore"
+  526  nano .gitignore 
+  527  git status ignored
+  528  git status --ignored
+  529  git commit -a
+  530  git add -u :/
+  531  git status --ignored
+  532  ls
+  533  cd datasets/
+  534  ls
+  535  cp northwind/ ~/Dev
+  536  cp -r northwind/ ~/Dev
+  537  rm -r northwind/
+  538  y
+  539  sudo rm -r northwind/
+  540  ls
+  541  mkdir northwind
+  542  ls ~/Dev/no*
+  543  whereis northwind
+  544  cd ~/Desktop/
+  545  cd northwind/
+  546  find . -name ".*"
+  547  rm .git
+  548  rm -r .git
+  549  find . -name ".*"
+  550  cd ..
+  551  cd ~/Dev/bigdata-docker
+  552  ls
+  553  git add datasets/northwind/
+  554  hist commit
+  555  git commit -a
+  556  git commit
+  557  git add .
+  558  ls
+  559  git add datasets/tables
+  560  docker images
+  561  docker ps -a
+  562  cd ../ubuntu-docker/
+  563  ls
+  564  cp ubuntu-docker.txt Dockerfile 
+  565  cd ..
+  566  cd bigdata-docker
+  567  cp bigdata-docker.txt Dockerfile 
+  568  alias
+  569  docker run -it joegagliardo/ubunutu /etc/bootstrap.sh -bash
+  570  docker images
+  571  docker run -it joegagliardo/ubuntu /etc/bootstrap.sh -bash
+  572  docker run -it joegagliardo/ubuntu /bin/bash -bash
+  573  alias
+  574  ls
+  575  cp bigdata-docker.txt Dockerfile 
+  576  docker pull joegagliardo/bigdata
+  577  docker ps -a
+  578  drm 2da69d41ef1f
+  579  drm 8af92dc15718
+  580  drm 362d27023e32
+  581  docker ps -a
+  582  docker images
+  583  drmi 3dc5a7f9e4a6
+  584  drmi 0dbe61cf2509
+  585  docker images
+  586  new-bd
+  587  ifconfig
+  588  cp bigdata-docker.txt Dockerfile 
+  589  start-bd
+  590  drm bigdata-client
+  591  nano ~/.bash_profile
+  592  source ~/.bash_profile
+  593  new-bd
+  594  ls
+  595  drm bigdata-client
+  596  docker images
+  597  cp bigdata-docker.txt Dockerfile 
+  598  cp bigdata-docker.txt Dockerfile 
+  599  docker pull joegagliardo/bigdata
+  600  new-bd
+  601  start-bd
+  602  cp bigdata-docker.txt Dockerfile 
+  603  cp bigdata-docker.txt Dockerfile 
+  604  alias
+  605  ssh-bd
+  606  start-bd
+  607  start-bd
+  608  start-bd
+  609  start-bd
+  610  docker ps -a
+  611  docker kill 8c6ce85f1927
+  612  docker kill 596382d190b3
+  613  docker ps -a
+  614  docker rm 8c6ce85f1927
+  615  docker rm 596382d190b3
+  616  docker rm 9a793dfd3310
+  617  docker rm 88e16f895337
+  618  docker ps -a
+  619  new-bd
+  620  alias
+  621  nano ~/.bash_profile
+  622  source ~/.bash_profile
+  623  alias
+  624  docker ps -a
+  625  docker rm ef2995f3331c
+  626  new-bd
+  627  docker ps -a
+  628  docker rm 00b94702d565
+  629  new-bd
+  630  docker pull joegagliardo/bigdata
+  631  docker pull joegagliardo/bigdata
+  632  new-bd
+  633  docker ps -a
+  634  docker rm joegagliardo/bigdata
+  635  docker rm joegagliardo/bigdata-client
+  636  docker rm 037a2094e462
+  637  docker ps -a
+  638  new-bd
+  639  start-bd
+  640  docker ps -a
+  641  docker rm f70ed2072511
+  642  docker images
+  643  docker pull joegagliardo/bigdata
+  644  new-bd
+  645  docker ps -a
+  646  docker rm 156c6db12e77
+  647  new-bd
+  648  docker pull joegagliardo/ubuntu
+  649  docker images
+  650  alias
+  651  docker run --name bigdata-client --hostname bigdata -p 50070:50070 -p 8088:8088 -p 10020:10020 -p 9042:9042 -v "$HOME:/home" -it joegagliardo/ubuntu /etc/bootstrap.sh -bash
+  652  docker ps -a
+  653  docker rm 43a11ef06083
+  654  docker run --name bigdata-client --hostname bigdata -p 50070:50070 -p 8088:8088 -p 10020:10020 -p 9042:9042 -v "$HOME:/home" -it joegagliardo/ubuntu /etc/bootstrap.sh -bash
+  655  docker run --name bigdata-client --hostname bigdata -p 50070:50070 -p 8088:8088 -p 10020:10020 -p 9042:9042 -v "$HOME:/home" -it joegagliardo/ubuntu /bin/bash -bash
+  656  docker ps -a
+  657  docker rm 71a92cbeed6c
+  658  docker run --name bigdata-client --hostname bigdata -p 50070:50070 -p 8088:8088 -p 10020:10020 -p 9042:9042 -v "$HOME:/home" -it joegagliardo/ubuntu /bin/bash -bash
+  659  docker images
+  660  docker rmi b8cc8c883390
+  661  docker rm 34e6c06b1338
+  662  docker rmi b8cc8c883390
+  663  docker images
+  664  docker ps -a
+  665  new-bd
+  666  docker pull joegagliardo/ubuntu
+  667  hist -client
+  668  hist bigdata
+  669  docker run --name bigdata-client --hostname bigdata -p 50070:50070 -p 8088:8088 -p 10020:10020 -p 9042:9042 -v "$HOME:/home" -it joegagliardo/ubuntu /bin/bash -bash
+  670  docker ps -a
+  671  docker rm d0f0394cccb8
+  672  docker run --name bigdata-client --hostname bigdata -p 50070:50070 -p 8088:8088 -p 10020:10020 -p 9042:9042 -v "$HOME:/home" -it joegagliardo/ubuntu /bin/bash -bash
+  673  cd ../ubuntu-docker/
+  674  nano Dockerfile 
+  675  docker ps -a
+  676  dbash bigdata-client
+  677  docker start bigdata-client && docker run bigdata-client
+  678  docker rm a1ac3784658e
+  679  docker run --name bigdata-client --hostname bigdata -p 50070:50070 -p 8088:8088 -p 10020:10020 -p 9042:9042 -v "$HOME:/home" -it joegagliardo/ubuntu /bin/bash -bash
+  680  docker ps -a
+  681  docker rm a1ac3784658e
+  682  docker images
+  683  docker run --name bigdata-client --hostname bigdata -p 50070:50070 -p 8088:8088 -p 10020:10020 -p 9042:9042 -v "$HOME:/home" -it joegagliardo/ubuntu /bin/bash -bash
+  684  docker ps -a
+  685  docker rm a1ac3784658e
+  686  docker rm a1ac3784658e -f
+  687  docker run --name bigdata-client --hostname bigdata -p 50070:50070 -p 8088:8088 -p 10020:10020 -p 9042:9042 -v "$HOME:/home" -it joegagliardo/ubuntu /bin/bash -bash
+  688  docker ps -a
+  689  docker rm 55de66bde065 -f
+  690  docker run --name bigdata-client --hostname bigdata -p 50070:50070 -p 8088:8088 -p 10020:10020 -p 9042:9042 -v "$HOME:/home" -it joegagliardo/ubuntu /bin/bash -bash
+  691  docker ps -a
+  692  docker rm d4bf5b8fa879
+  693  docker pull joegagliardo/ubuntu
+  694  docker run --name bigdata-client --hostname bigdata -p 50070:50070 -p 8088:8088 -p 10020:10020 -p 9042:9042 -v "$HOME:/home" -it joegagliardo/ubuntu /bin/bash -bash
+  695  docker ps -a
+  696  docker rm 5b8776afdefc
+  697  cd ..
+  698  mkdir mysql-docker
+  699  cp ubuntu-docker/Dockerfile mysql-docker/
+  700  cd mysql-docker/
+  701  nano Dockerfile 
+  702  history | grep build
+  703  docker build .
+  704  nano Dockerfile 
+  705  docker build .
+  706  docker images
+  707  docker run -v "$HOME:/home" -it c23e571d52cd /bin/bash -bash
+  708  docker ps -a
+  709  docker rm 5993f1f1282f
+  710  nano Dockerfile 
+  711  docker run -v "$HOME:/home" -it c23e571d52cd /bin/bash -bash
+  712  nano Dockerfile 
+  713  nano Dockerfile 
+  714  docker pull ubuntu:16.04
+  715  docker images
+  716  docker run -v "$HOME:/home" -it ubuntu /bin/bash -bash
+  717  docker images
+  718  docker run -v "$HOME:/home" -it ubuntu:16.04 /bin/bash -bash
+  719  docker ps -a
+  720  docker rm ad84f85d3c0b
+  721  docker rm 4ce2ac0fb890
+  722  docker rm ea28b11a48be
+  723  docker ps -a
+  724  docker rm 4c62912ae85b
+  725  docker rm 16e19eeee1e7
+  726  docker ps -a
+  727  docker images
+  728  hist docker
+  729  hist save
+  730  docker images
+  731  ls *.tar
+  732  docker save d202a18b1043 > bigdata.works.tar
+  733  docker load bigdata < bigdata.works.tar
+  734  docker load bigdata.works.tar
+  735  docker load < bigdata.works.tar
+  736  docker images
+  737  docker run --name bigdata-client --hostname bigdata -p 50070:50070 -p 8088:8088 -p 10020:10020 -p 9042:9042 -v "$HOME:/home" -it d202a18b1043 /etc/bootstrap.sh -bash
+  738  docker pull ubuntu:16.04
+  739  docker images
+  740  alias
+  741  docker run -it ubuntu:16.04 /bin/bash -bash
+  742  docker ps -a
+  743  docker start 68f74c38a148 && docker attach 68f74c38a148
+  744  docker start 68f74c38a148 && docker attach 68f74c38a148
+  745  docker images
+  746  docker tag d202a18b1043 joegagliard/bigdata
+  747  docker images
+  748  new-bd
+  749  docker tag d202a18b1043 joegagliardo/bigdata
+  750  new-bd
+  751  docker ps -a
+  752  start-bd
+  753  nano ~/.bash_profile
+  754  cd ..
+  755  cd ubuntu-docker/
+  756  cp ubuntu-docker.txt Dockerfile 
+  757  dbash ubuntu
+  758  docker ps
+  759  docker shutdown ubuntu
+  760  docker stop ubuntu
+  761  docker ps
+  762  docker start ubuntu && docker attach ubuntu
+  763  docker start ubuntu && docker attach ubuntu
+  764  docker start ubuntu && docker attach ubuntu
+  765  cd ..
+  766  cd ubuntu-docker/
+  767  cp ubuntu-docker.txt Dockerfile 
+  768  alias
+  769  new-ub
+  770  cp ubuntu-docker.txt Dockerfile 
+  771  history
+  772  history > hist1.txt
