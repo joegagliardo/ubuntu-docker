@@ -5,7 +5,8 @@ EXPOSE 50020 50090 50070 50010 50075 8031 8032 8033 8040 8042 49707 22 8088 8030
 
 
 # MYSQL Passwords
-ARG MYSQLROOT_PASSWORD=
+ARG MYSQLROOT_PASSWORD=rootpassword
+ARG MYSQL_PASSWORD=
 
 USER root
 
@@ -47,6 +48,13 @@ RUN apt-get update && \
     apt-get update && \
     echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections && \
     apt-get -y install oracle-java8-installer build-essential && \
+    echo "# ---------------------------------------------" && \
+    echo "# R" && \
+    echo "# ---------------------------------------------" && \
+    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 && \
+    add-apt-repository 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial/' && \
+    apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get -y install libpng12-0 r-base r-base-core r-recommended r-base-html && \
     echo "# ---------------------------------------------" && \
     echo "# Python" && \
     echo "# ---------------------------------------------" && \
@@ -94,13 +102,6 @@ RUN apt-get update && \
     echo "#! /bin/sh" > /scripts/stop-mysql.sh && \
     echo "/etc/init.d/mysql stop" >> /scripts/stop-mysql.sh && \
     chmod +x /scripts/stop-mysql.sh && \
-    echo "# ---------------------------------------------" && \
-    echo "# R" && \
-    echo "# ---------------------------------------------" && \
-    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 && \
-    add-apt-repository 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial/' && \
-    apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get -y install apt-transport-https r-base r-base-core r-recommended r-base-html && \
     echo "# ---------------------------------------------" && \
     echo "# Maven" && \
     echo "# ---------------------------------------------" && \
