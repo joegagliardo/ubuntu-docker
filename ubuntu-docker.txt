@@ -87,15 +87,16 @@ RUN apt-get update && \
     echo "[mysqld]" >> /etc/my.cnf && \
     echo "datadir=/data/mysql" >> /etc/my.cnf && \
     mysqld --defaults-file=/etc/my.cnf --initialize-insecure --user=mysql --explicit_defaults_for_timestamp && \
-    usermod -d /data/mysql/ mysql && \
     sudo chown -R mysql /data/mysql && \
     sudo chgrp -R mysql /data/mysql && \
+    usermod -d /data/mysql/ mysql && \
     echo "#! /bin/sh" > /scripts/start-mysql.sh && \
     echo "sudo /etc/init.d/mysql start" >> /scripts/start-mysql.sh && \
     chmod +x /scripts/start-mysql.sh && \
     echo "#! /bin/sh" > /scripts/stop-mysql.sh && \
     echo "sudo /etc/init.d/mysql stop" >> /scripts/stop-mysql.sh && \
     chmod +x /scripts/stop-mysql.sh && \
+    sudo ln -s /tmp/mysql.sock /var/mysql/mysql.sock && \
     echo "# ---------------------------------------------" && \
     echo "# R" && \
     echo "# ---------------------------------------------" && \
@@ -183,3 +184,11 @@ ENV PATH $PATH:$JAVA_HOME/bin:/scripts:/home
 #port            = 3306
 #socket          = /var/run/mysqld/mysqld.sock
 
+
+
+#rm -r /data/mysql && \
+#    mysqld --defaults-file=/etc/my.cnf --initialize-insecure --user=mysql --explicit_defaults_for_timestamp && \
+#    sudo chown -R mysql /data/mysql && \
+#    sudo chgrp -R mysql /data/mysql && \
+#    usermod -d /data/mysql/ mysql
+    
