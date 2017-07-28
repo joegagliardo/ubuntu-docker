@@ -52,6 +52,8 @@ RUN apt-get update && \
     echo "# Python" && \
     echo "# ---------------------------------------------" && \
     wget https://bootstrap.pypa.io/get-pip.py && \
+    ln -s /usr/bin/python2.7 /usr/bin/python && \
+    ln -s /usr/bin/python2.7 /usr/bin/python2 && \
     python get-pip.py && \
     python3 get-pip.py && \
     rm /usr/local/bin/pip && \
