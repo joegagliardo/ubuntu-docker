@@ -107,7 +107,7 @@ RUN apt-get update && \
     chmod +x /scripts/start-mysql.sh && \
     echo "#! /bin/sh" > /scripts/stop-mysql.sh && \
     echo "/etc/init.d/mysql stop" >> /scripts/stop-mysql.sh && \
-    chmod +x /scripts/stop-mysql.sh 
+    chmod +x /scripts/stop-mysql.sh && \
     echo "# ---------------------------------------------" && \
     echo "# Maven" && \
     echo "# ---------------------------------------------" && \
