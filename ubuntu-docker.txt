@@ -89,9 +89,10 @@ RUN apt-get update && \
     echo "# ---------------------------------------------" && \
     echo "# MYSQL" && \
     echo "# ---------------------------------------------" && \
-    echo "mysql-server-5.5 mysql-server/root_password password ${MYSQLROOT_PASSWORD}" | debconf-set-selections && \
-    echo "mysql-server-5.5 mysql-server/root_password_again password ${MYSQLROOT_PASSWORD}" | debconf-set-selections && \
-    DEBIAN_FRONTEND=noninteractive apt-get -y install mysql-server mysql-client libmysql-java && \
+	echo "mysql-server mysql-server/root_password password ${MYSQLROOT_PASSWORD}" | debconf-set-selections && \
+	echo "mysql-server mysql-server/root_password_again password ${MYSQLROOT_PASSWORD}" | debconf-set-selections && \
+    apt-get -y install mysql-server mysql-client libmysql-java && \
+    mkdir /data/mysql && \
     echo "[client]" > /etc/my.cnf && \
     echo "user=root" >> /etc/my.cnf && \
     echo "password=${MYSQLROOT_PASSWORD}" >> /etc/my.cnf && \
@@ -101,11 +102,12 @@ RUN apt-get update && \
     mysqld --defaults-file=/etc/my.cnf --initialize-insecure --user=mysql --explicit_defaults_for_timestamp && \
     usermod -d /data/mysql/ mysql && \
     echo "#! /bin/sh" > /scripts/start-mysql.sh && \
-    echo "/etc/init.d/mysql start" >> /scripts/start-mysql.sh && \
+    echo "# weird problem about starting MySQL in a container so I found this article: https://github.com/moby/moby/issues/34390" && \
+    echo "find /var/lib/mysql/mysql -exec touch -c -a {} + && service mysql start" >> /scripts/start-mysql.sh && \
     chmod +x /scripts/start-mysql.sh && \
     echo "#! /bin/sh" > /scripts/stop-mysql.sh && \
     echo "/etc/init.d/mysql stop" >> /scripts/stop-mysql.sh && \
-    chmod +x /scripts/stop-mysql.sh && \
+    chmod +x /scripts/stop-mysql.sh 
     echo "# ---------------------------------------------" && \
     echo "# Maven" && \
     echo "# ---------------------------------------------" && \
