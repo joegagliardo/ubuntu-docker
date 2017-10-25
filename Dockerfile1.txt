@@ -68,7 +68,7 @@ RUN apt-get update && \
     pip2 install cherrypy && \
     pip3 install cherrypy && \
     pip2 install pymssql && \
-    pip3 install pymssql && \
+    echo "pip3 install pymssql" && \
     DEBIAN_FRONTEND=noninteractive apt-get -yq build-dep python-matplotlib && \
     pip2 install matplotlib && \
     pip3 install matplotlib && \
