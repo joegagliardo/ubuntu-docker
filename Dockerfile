@@ -9,24 +9,26 @@ ARG MYSQLROOT_PASSWORD=rootpassword
 ARG MYSQL_PASSWORD=
 
 USER root
+ARG USER_HOME_DIR="/root"
 
 # Versions
+# Maven
+# ARG SHA=beb91419245395bd69a4a6edad5ca3ec1a8b64e41457672dc687c173a495f034
 ARG MAVEN_VERSION=3.5.2
 ARG MAVEN_BASE_URL=http://apache.claz.org/maven/maven-3
 ARG MAVEN_URL=${MAVEN_BASE_URL}/${MAVEN_VERSION}/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz
 
+# Scala
 ARG SCALA_VERSION=2.11.11
 ARG SCALA_BASE_URL=http://www.scala-lang.org/files/archive
 ARG SCALA_URL=${SCALA_BASE_URL}/scala-${SCALA_VERSION}.deb
 #http://www.scala-lang.org/files/archive/scala-2.11.11.deb
 
+# SBT
 ARG SBT_VERSION=0.13.15
 ARG SBT_BASE_URL=https://dl.bintray.com/sbt/debian/sbt
 ARG SBT_URL=${SBT_BASE_URL}-${SBT_VERSION}.deb
 
-# Maven
-ARG USER_HOME_DIR="/root"
-ARG SHA=beb91419245395bd69a4a6edad5ca3ec1a8b64e41457672dc687c173a495f034
 
 USER root
 
@@ -114,8 +116,7 @@ RUN apt-get update && \
     echo ${MAVEN_URL} && \ 
     mkdir -p /usr/share/maven /usr/share/maven/ref && \
     curl -fsSL -o /tmp/apache-maven.tar.gz ${MAVEN_URL} && \ 
-    echo "${SHA}  /tmp/apache-maven.tar.gz" | sha256sum -c - && \
-    tar -xzf /tmp/apache-maven.tar.gz -C /usr/share/maven --strip-components=1 && \
+    tar -xzvf /tmp/apache-maven.tar.gz -C /usr/share/maven --strip-components=1 && \
     rm -f /tmp/apache-maven.tar.gz && \
     ln -s /usr/share/maven/bin/mvn /usr/bin/mvn && \
     echo "# ---------------------------------------------" && \
@@ -204,4 +205,13 @@ ENV PATH $PATH:$JAVA_HOME/bin:/scripts:/home
 #    sudo chown -R mysql /data/mysql && \
 #    sudo chgrp -R mysql /data/mysql && \
 #    ln -s /usr/bin/python2.7 /usr/bin/python && \
+
+
+
+#    mkdir -p /usr/share/maven /usr/share/maven/ref && \
+#    curl -fsSL -o /tmp/apache-maven.tar.gz ${MAVEN_URL} && \ 
+#    echo "${SHA}  /tmp/apache-maven.tar.gz" | sha256sum -c - && \
+#    tar -xzf /tmp/apache-maven.tar.gz -C /usr/share/maven --strip-components=1 && \
+#    rm -f /tmp/apache-maven.tar.gz && \
+#    ln -s /usr/share/maven/bin/mvn /usr/bin/mvn && \
 
