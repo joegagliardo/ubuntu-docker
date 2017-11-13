@@ -16,7 +16,7 @@ ARG USER_HOME_DIR="/root"
 # ARG SHA=beb91419245395bd69a4a6edad5ca3ec1a8b64e41457672dc687c173a495f034
 ARG MAVEN_VERSION=3.5.2
 ARG MAVEN_BASE_URL=http://apache.claz.org/maven/maven-3
-ARG MAVEN_URL=${MAVEN_BASE_URL}/${MAVEN_VERSION}/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz
+ARG MAVEN_URL=${MAVEN_BASE_URL}/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz
 
 # Scala
 ARG SCALA_VERSION=2.11.11
@@ -87,6 +87,10 @@ RUN apt-get update && \
     cd /home && \
     wget http://mirrors.kernel.org/ubuntu/pool/main/libp/libpng/libpng12-0_1.2.54-1ubuntu1_amd64.deb && \
     dpkg -i libpng12-0_1.2.54-1ubuntu1_amd64.deb && \
+    wget https://dev.mysql.com/get/Downloads/Connector-Python/mysql-connector-python_2.1.7-1ubuntu17.04_all.deb && \
+	dpkg -i mysql-connector-python_2.1.7-1ubuntu17.04_all.deb && \
+	rm /home/libpng12-0_1.2.54-1ubuntu1_amd64.deb && \
+	rm /home/mysql-connector-python_2.1.7-1ubuntu17.04_all.deb && \
     DEBIAN_FRONTEND=noninteractive apt-get -y install r-base r-base-core r-recommended r-base-html && \
     echo "# ---------------------------------------------" && \
     echo "# MYSQL" && \
