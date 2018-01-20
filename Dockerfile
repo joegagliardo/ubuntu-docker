@@ -46,14 +46,15 @@ RUN apt-get update && \
     echo "# ---------------------------------------------" && \
     add-apt-repository ppa:webupd8team/java -y && \
     apt-get update && \
-    echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections && \
-    apt-get -y install oracle-java8-installer build-essential && \
+    echo oracle-java9-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections && \
+    echo "----> uncomment -----> apt-get -y install oracle-java9-installer build-essential" && \
+    apt-get -y install openjdk-9-jdk build-essential && \
     echo "# ---------------------------------------------" && \
     echo "# Python" && \
     echo "# ---------------------------------------------" && \
     wget https://bootstrap.pypa.io/get-pip.py && \
-    ln -s /usr/bin/python2.7 /usr/bin/python && \
-    ln -s /usr/bin/python2.7 /usr/bin/python2 && \
+    echo "----> ln -s /usr/bin/python2.7 /usr/bin/python" && \
+    echo "----> ln -s /usr/bin/python2.7 /usr/bin/python2" && \
     python get-pip.py && \
     python3 get-pip.py && \
     rm /usr/local/bin/pip && \
@@ -67,8 +68,8 @@ RUN apt-get update && \
     pip3 install pandas && \
     pip2 install cherrypy && \
     pip3 install cherrypy && \
-    pip2 install pymssql && \
-    pip3 install pymssql && \
+    echo "----> fix ----> install pymssql" && \
+    echo "----> fix ----> pip3 install pymssql" && \
     DEBIAN_FRONTEND=noninteractive apt-get -yq build-dep python-matplotlib && \
     pip2 install matplotlib && \
     pip3 install matplotlib && \
