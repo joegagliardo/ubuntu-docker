@@ -1,4 +1,4 @@
-FROM ubuntu:17.04
+FROM ubuntu:17.10
 MAINTAINER joegagliardo
 
 EXPOSE 50020 50090 50070 50010 50075 8031 8032 8033 8040 8042 49707 22 8088 8030 3306
@@ -35,7 +35,7 @@ RUN apt-get update && \
     echo "# ---------------------------------------------" && \
     echo "# OS tools" && \
     echo "# ---------------------------------------------" && \
-    apt-get -y install curl tar sudo openssh-server openssh-client rsync nano vim software-properties-common git python2.7 gcc apt-utils netcat debconf apt-transport-https && \
+    apt-get -y install curl tar sudo openssh-server openssh-client unzip rsync nano vim software-properties-common git python2.7 python-dev gcc apt-utils netcat debconf apt-transport-https net-tools libaio-dev && \
     apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8 && \
     apt-get update && \
     mkdir /scripts && \
@@ -204,4 +204,33 @@ ENV PATH $PATH:$JAVA_HOME/bin:/scripts:/home
 #    sudo chown -R mysql /data/mysql && \
 #    sudo chgrp -R mysql /data/mysql && \
 #    ln -s /usr/bin/python2.7 /usr/bin/python && \
+# --name bigdata-client --hostname bigdata
+# docker run --name sqlserver --hostname sqlserver -e 'ACCEPT_EULA=Y' -e 'MSSQL_SA_PASSWORD=SapwAug2017!' --cap-add SYS_PTRACE -p 1433:1433 -v $HOME/Dev/sqlserver-linux:/var/opt/mssql -d microsoft/mssql-server-linux
+# docker run --name sqlserver -e 'ACCEPT_EULA=Y' -e 'MSSQL_SA_PASSWORD=SapwAug2017!' --cap-add SYS_PTRACE -p 1433:1433 -v sqlserver-linux-volume:/var/opt/mssql -d microsoft/mssql-server-linux
 
+# docker run --name sqlserver -v "$HOME:/home" -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=Sapw17!Sapw17!' -p 1433:1433 -d microsoft/mssql-server-linux
+# docker run --name sqlserver -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=SapwAug2017!' -p 1433:1433 -d microsoft/mssql-server-linux
+# docker exec -it sqlserver /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P SapwAug2017!
+# docker exec -it sqlserver /bin/bash
+# /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P SapwAug2017!
+
+
+# @"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))" && SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin"
+# choco install -y docker  
+# choco install -y docker-machine  
+# choco install -y docker-machine-vmwareworkstation  
+
+
+#import pymssql
+#conn = pymssql.connect(server='sqlserver', user='sa', password='SaPassword17!', database='joey1')
+#conn = pymssql.connect(server='172.17.0.2', user='sa', password='SaPassword17!', database='joey1')
+#cursor = conn.cursor()
+#cursor.execute('select * from names')
+#row=cursor.fetchone()
+#print row
+
+
+# docker run --name sqlserver --hostname sqlserver -e 'ACCEPT_EULA=Y' -e 'MSSQL_SA_PASSWORD=SaPassword17!' --cap-add SYS_PTRACE -p 1433:1433 -v sqlvolume:/var/opt/mssql -d microsoft/mssql-server-linux
+# docker exec -it sqlserver /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P SaPassword17!
+# docker exec -it sqlserver /bin/bash
+# /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P SaPassword17!
