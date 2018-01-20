@@ -9,26 +9,24 @@ ARG MYSQLROOT_PASSWORD=rootpassword
 ARG MYSQL_PASSWORD=
 
 USER root
-ARG USER_HOME_DIR="/root"
 
 # Versions
-# Maven
-# ARG SHA=beb91419245395bd69a4a6edad5ca3ec1a8b64e41457672dc687c173a495f034
-ARG MAVEN_VERSION=3.5.2
+ARG MAVEN_VERSION=3.5.0
 ARG MAVEN_BASE_URL=http://apache.claz.org/maven/maven-3
-ARG MAVEN_URL=${MAVEN_BASE_URL}/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz
+ARG MAVEN_URL=${MAVEN_BASE_URL}/${MAVEN_VERSION}/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz
 
-# Scala
 ARG SCALA_VERSION=2.11.11
 ARG SCALA_BASE_URL=http://www.scala-lang.org/files/archive
 ARG SCALA_URL=${SCALA_BASE_URL}/scala-${SCALA_VERSION}.deb
 #http://www.scala-lang.org/files/archive/scala-2.11.11.deb
 
-# SBT
 ARG SBT_VERSION=0.13.15
 ARG SBT_BASE_URL=https://dl.bintray.com/sbt/debian/sbt
 ARG SBT_URL=${SBT_BASE_URL}-${SBT_VERSION}.deb
 
+# Maven
+ARG USER_HOME_DIR="/root"
+ARG SHA=beb91419245395bd69a4a6edad5ca3ec1a8b64e41457672dc687c173a495f034
 
 USER root
 
@@ -87,10 +85,6 @@ RUN apt-get update && \
     cd /home && \
     wget http://mirrors.kernel.org/ubuntu/pool/main/libp/libpng/libpng12-0_1.2.54-1ubuntu1_amd64.deb && \
     dpkg -i libpng12-0_1.2.54-1ubuntu1_amd64.deb && \
-    wget https://dev.mysql.com/get/Downloads/Connector-Python/mysql-connector-python_2.1.7-1ubuntu17.04_all.deb && \
-	dpkg -i mysql-connector-python_2.1.7-1ubuntu17.04_all.deb && \
-	rm /home/libpng12-0_1.2.54-1ubuntu1_amd64.deb && \
-	rm /home/mysql-connector-python_2.1.7-1ubuntu17.04_all.deb && \
     DEBIAN_FRONTEND=noninteractive apt-get -y install r-base r-base-core r-recommended r-base-html && \
     echo "# ---------------------------------------------" && \
     echo "# MYSQL" && \
@@ -120,7 +114,8 @@ RUN apt-get update && \
     echo ${MAVEN_URL} && \ 
     mkdir -p /usr/share/maven /usr/share/maven/ref && \
     curl -fsSL -o /tmp/apache-maven.tar.gz ${MAVEN_URL} && \ 
-    tar -xzvf /tmp/apache-maven.tar.gz -C /usr/share/maven --strip-components=1 && \
+    echo "${SHA}  /tmp/apache-maven.tar.gz" | sha256sum -c - && \
+    tar -xzf /tmp/apache-maven.tar.gz -C /usr/share/maven --strip-components=1 && \
     rm -f /tmp/apache-maven.tar.gz && \
     ln -s /usr/share/maven/bin/mvn /usr/bin/mvn && \
     echo "# ---------------------------------------------" && \
@@ -213,7 +208,6 @@ ENV PATH $PATH:$JAVA_HOME/bin:/scripts:/home
 # docker run --name sqlserver --hostname sqlserver -e 'ACCEPT_EULA=Y' -e 'MSSQL_SA_PASSWORD=SapwAug2017!' --cap-add SYS_PTRACE -p 1433:1433 -v $HOME/Dev/sqlserver-linux:/var/opt/mssql -d microsoft/mssql-server-linux
 # docker run --name sqlserver -e 'ACCEPT_EULA=Y' -e 'MSSQL_SA_PASSWORD=SapwAug2017!' --cap-add SYS_PTRACE -p 1433:1433 -v sqlserver-linux-volume:/var/opt/mssql -d microsoft/mssql-server-linux
 
-<<<<<<< HEAD
 # docker run --name sqlserver -v "$HOME:/home" -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=Sapw17!Sapw17!' -p 1433:1433 -d microsoft/mssql-server-linux
 # docker run --name sqlserver -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=SapwAug2017!' -p 1433:1433 -d microsoft/mssql-server-linux
 # docker exec -it sqlserver /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P SapwAug2017!
@@ -240,14 +234,3 @@ ENV PATH $PATH:$JAVA_HOME/bin:/scripts:/home
 # docker exec -it sqlserver /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P SaPassword17!
 # docker exec -it sqlserver /bin/bash
 # /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P SaPassword17!
-=======
-
-
-#    mkdir -p /usr/share/maven /usr/share/maven/ref && \
-#    curl -fsSL -o /tmp/apache-maven.tar.gz ${MAVEN_URL} && \ 
-#    echo "${SHA}  /tmp/apache-maven.tar.gz" | sha256sum -c - && \
-#    tar -xzf /tmp/apache-maven.tar.gz -C /usr/share/maven --strip-components=1 && \
-#    rm -f /tmp/apache-maven.tar.gz && \
-#    ln -s /usr/share/maven/bin/mvn /usr/bin/mvn && \
-
->>>>>>> 5d4f7729db4938ead0ad078e8df8cc25c4f13361
