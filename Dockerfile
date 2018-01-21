@@ -139,7 +139,7 @@ RUN echo "*************" && \
     echo "" >> /scripts/notes.txt
 
 #ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
-ENV JAVA_HOME /usr/lib/jvm/open-jdk
+ENV JAVA_HOME ENV JAVA_HOME /usr/lib/jvm/java-1.9.0-openjdk-amd64
 #ENV JAVA_HOME /usr
 ENV PATH $PATH:$JAVA_HOME/bin:/scripts:/home
 
@@ -155,6 +155,10 @@ ENV PATH $PATH:$JAVA_HOME/bin:/scripts:/home
 #    dpkg -i libpng12-0_1.2.54-1ubuntu1_amd64.deb && \
 #    DEBIAN_FRONTEND=noninteractive apt-get -y install gdebi libxml2-dev libssl-dev libcurl4-openssl-dev libopenblas-dev && \
 #    DEBIAN_FRONTEND=noninteractive apt-get -y install r-base r-base-core r-recommended r-base-html && \
+#    DEBIAN_FRONTEND=noninteractive apt-get -y install r-base-core && \
+#    DEBIAN_FRONTEND=noninteractive apt-get -y install r-cran-boot && \
+#    DEBIAN_FRONTEND=noninteractive apt-get -y install r-cran-spatial && \
+#    DEBIAN_FRONTEND=noninteractive apt-get -y r-base r-recommended r-base-html && \
 
 #    echo "# ---------------------------------------------" && \
 #    echo "# Maven" && \
