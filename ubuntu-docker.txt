@@ -35,12 +35,23 @@ RUN apt-get update && \
     echo "# ---------------------------------------------" && \
     echo "# OS tools" && \
     echo "# ---------------------------------------------" && \
-    apt-get -y install curl tar sudo openssh-server openssh-client unzip rsync nano vim software-properties-common git python2.7 python-dev gcc apt-utils netcat debconf apt-transport-https net-tools libaio-dev && \
+    apt-get -y install curl tar sudo openssh-server openssh-client unzip rsync nano vim software-properties-common git python2.7 python-dev gcc apt-utils netcat debconf apt-transport-https net-tools libaio-dev aptitude && \
     apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8 && \
     apt-get update && \
     mkdir /scripts && \
     mkdir /data && \
     cd /home && \
+    echo "# ---------------------------------------------" && \
+    echo "# R" && \
+    echo "# ---------------------------------------------" && \
+    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 && \
+    add-apt-repository 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial/' && \
+    apt-get update && \
+    cd /home && \
+    wget http://mirrors.kernel.org/ubuntu/pool/main/libp/libpng/libpng12-0_1.2.54-1ubuntu1_amd64.deb && \
+    dpkg -i libpng12-0_1.2.54-1ubuntu1_amd64.deb && \
+    DEBIAN_FRONTEND=noninteractive apt-get -y install gdebi libxml2-dev libssl-dev libcurl4-openssl-dev libopenblas-dev && \
+    aptitude install -y r-cran-spatial r-cran-boot r-recommended r-base-core r-base r-base-html && \
     echo "# ---------------------------------------------" && \
     echo "# Java" && \
     echo "# ---------------------------------------------" && \
@@ -131,8 +142,8 @@ RUN apt-get update && \
 RUN echo "*************" && \
     echo "" >> /scripts/notes.txt
 
-#ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
-ENV JAVA_HOME ENV JAVA_HOME /usr/lib/jvm/java-1.9.0-openjdk-amd64
+ENV JAVA_HOME /usr/lib/jvm/java-9-oracle
+#ENV JAVA_HOME ENV JAVA_HOME /usr/lib/jvm/java-1.9.0-openjdk-amd64
 #ENV JAVA_HOME /usr
 ENV PATH $PATH:$JAVA_HOME/bin:/scripts:/home
 
