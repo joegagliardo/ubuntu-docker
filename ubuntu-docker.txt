@@ -11,22 +11,22 @@ ARG MYSQL_PASSWORD=
 USER root
 
 # Versions
-ARG MAVEN_VERSION=3.5.2
-ARG MAVEN_BASE_URL=http://apache.claz.org/maven/maven-3
-ARG MAVEN_URL=${MAVEN_BASE_URL}/${MAVEN_VERSION}/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz
+#ARG MAVEN_VERSION=3.5.2
+#ARG MAVEN_BASE_URL=http://apache.claz.org/maven/maven-3
+#ARG MAVEN_URL=${MAVEN_BASE_URL}/${MAVEN_VERSION}/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz
 
-ARG SCALA_VERSION=2.11.11
-ARG SCALA_BASE_URL=http://www.scala-lang.org/files/archive
-ARG SCALA_URL=${SCALA_BASE_URL}/scala-${SCALA_VERSION}.deb
+#ARG SCALA_VERSION=2.11.11
+#ARG SCALA_BASE_URL=http://www.scala-lang.org/files/archive
+#ARG SCALA_URL=${SCALA_BASE_URL}/scala-${SCALA_VERSION}.deb
 #http://www.scala-lang.org/files/archive/scala-2.11.11.deb
 
-ARG SBT_VERSION=1.1.0
-ARG SBT_BASE_URL=https://dl.bintray.com/sbt/debian/sbt
-ARG SBT_URL=${SBT_BASE_URL}-${SBT_VERSION}.deb
+#ARG SBT_VERSION=1.1.0
+#ARG SBT_BASE_URL=https://dl.bintray.com/sbt/debian/sbt
+#ARG SBT_URL=${SBT_BASE_URL}-${SBT_VERSION}.deb
 
 # Maven
-ARG USER_HOME_DIR="/root"
-ARG SHA=beb91419245395bd69a4a6edad5ca3ec1a8b64e41457672dc687c173a495f034
+#ARG USER_HOME_DIR="/root"
+#ARG SHA=beb91419245395bd69a4a6edad5ca3ec1a8b64e41457672dc687c173a495f034
 
 USER root
 
@@ -106,21 +106,14 @@ RUN apt-get update && \
     echo "# ---------------------------------------------" && \
     echo "# Scala" && \
     echo "# ---------------------------------------------" && \
-    echo ${SCALA_URL} && \
-    cd /home && \
-    wget ${SCALA_URL} && \
-    dpkg -i scala-${SCALA_VERSION}.deb && \
-    rm scala-${SCALA_VERSION}.deb && \
+	apt-get install -y scala && \
     echo "# ---------------------------------------------" && \
     echo "# SBT" && \
     echo "# ---------------------------------------------" && \
-    echo ${SBT_URL} && \
-    cd /home && \
-    wget ${SBT_URL} && \
-    dpkg -i sbt-${SBT_VERSION}.deb && \
-    cd /home && \
-    apt-get install -f && \
-    rm /home/sbt-${SBT_VERSION}.deb && \
+    echo "deb https://dl.bintray.com/sbt/debian /" | sudo tee -a /etc/apt/sources.list.d/sbt.list && \
+	apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2EE0EA64E40A89B84B2DF73499E82A75642AC823 && \
+    apt-get update && \
+    apt-get install sbt && \
     echo "# ---------------------------------------------" && \
     echo "# Notes" && \
     echo "# ---------------------------------------------" && \
@@ -159,6 +152,27 @@ ENV PATH $PATH:$JAVA_HOME/bin:/scripts:/home
 #    DEBIAN_FRONTEND=noninteractive apt-get -y install r-cran-boot && \
 #    DEBIAN_FRONTEND=noninteractive apt-get -y install r-cran-spatial && \
 #    DEBIAN_FRONTEND=noninteractive apt-get -y r-base r-recommended r-base-html && \
+
+
+
+#    echo "# ---------------------------------------------" && \
+#    echo "# Scala" && \
+#    echo "# ---------------------------------------------" && \
+#    echo ${SCALA_URL} && \
+#    cd /home && \
+#    wget ${SCALA_URL} && \
+#    dpkg -i scala-${SCALA_VERSION}.deb && \
+#    rm scala-${SCALA_VERSION}.deb && \
+#    echo "# ---------------------------------------------" && \
+#    echo "# SBT" && \
+#    echo "# ---------------------------------------------" && \
+#    echo ${SBT_URL} && \
+#    cd /home && \
+#    wget ${SBT_URL} && \
+#    dpkg -i sbt-${SBT_VERSION}.deb && \
+#    cd /home && \
+#    apt-get install -f && \
+#    rm /home/sbt-${SBT_VERSION}.deb && \
 
 #    echo "# ---------------------------------------------" && \
 #    echo "# Maven" && \
