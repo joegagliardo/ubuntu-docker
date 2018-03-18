@@ -130,7 +130,7 @@ RUN apt-get update && \
 RUN echo "*************" && \
     echo "" >> /scripts/notes.txt
 
-ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
+ENV JAVA_HOME /usr/lib/jvm/java-9-oracle
 #ENV JAVA_HOME ENV JAVA_HOME /usr/lib/jvm/java-1.9.0-openjdk-amd64
 #ENV JAVA_HOME /usr
 ENV PATH $PATH:$JAVA_HOME/bin:/scripts:/home
