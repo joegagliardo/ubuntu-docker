@@ -52,8 +52,8 @@ RUN apt-get update && \
     echo "# ---------------------------------------------" && \
     echo "# Java" && \
     echo "# ---------------------------------------------" && \
-    echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections && \
-    apt-get -y install oracle-java8-installer build-essential && \
+    echo oracle-java9-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections && \
+    apt-get -y install oracle-java9-installer build-essential && \
     echo "----> uncomment -----> apt-get -y install openjdk-9-jdk build-essential" && \
     echo "# ---------------------------------------------" && \
     echo "# Maven Scala SBT NodeJS NPM Sqlite3" && \
