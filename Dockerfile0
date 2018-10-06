@@ -1,4 +1,4 @@
-FROM ubuntu:18.10
+FROM ubuntu:17.10
 MAINTAINER joegagliardo
 
 EXPOSE 50020 50090 50070 50010 50075 8031 8032 8033 8040 8042 49707 22 8088 8030 3306
@@ -26,8 +26,6 @@ USER root
 # Maven
 #ARG USER_HOME_DIR="/root"
 #ARG SHA=beb91419245395bd69a4a6edad5ca3ec1a8b64e41457672dc687c173a495f034
-
-ARG DEBIAN_FRONTEND=noninteractive
 
 USER root
 
@@ -128,8 +126,9 @@ RUN apt-get update && \
     apt-get -y clean && \
     apt-get -y autoremove && \
     rm -rf /var/lib/apt/lists/* && \
-    echo "*************" && \
-    echo "*************" && \
+    echo "*************" 
+
+RUN echo "*************" && \
     echo "" >> /scripts/notes.txt
 
 ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
