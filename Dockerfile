@@ -1,3 +1,4 @@
+# joegagliardo/ubuntu
 FROM ubuntu:18.10
 MAINTAINER joegagliardo
 
@@ -36,7 +37,7 @@ RUN apt-get update && \
     echo "# ---------------------------------------------" && \
     echo "# OS tools" && \
     echo "# ---------------------------------------------" && \
-    apt-get -y install curl tar sudo openssh-server openssh-client unzip rsync nano vim software-properties-common git python2.7 python-dev gcc apt-utils netcat debconf apt-transport-https net-tools libaio-dev aptitude && \
+    apt-get -y install curl tar sudo openssh-server openssh-client unzip rsync nano vim software-properties-common git python2.7 python-dev gcc apt-utils netcat debconf apt-transport-https net-tools libaio-dev aptitude libgmp3-dev libmysqlclient-dev && \
     apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8 && \
     echo "# R repository" && \
     apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 && \
@@ -95,6 +96,11 @@ RUN apt-get update && \
     pip2 install matplotlib && \
     pip3 install matplotlib && \
     echo "# ---------------------------------------------" && \
+    echo "# Julia" && \
+    echo "# ---------------------------------------------" && \
+    curl --progress-bar https://julialang-s3.julialang.org/bin/linux/x64/1.0/julia-1.0.1-linux-x86_64.tar.gz | tar -xz -C /usr/local/ && \
+    ln -s /usr/local/julia* /usr/local/julia && \
+    echo "# ---------------------------------------------" && \
     echo "# MYSQL" && \
     echo "# ---------------------------------------------" && \
 	echo "mysql-server mysql-server/root_password password ${MYSQLROOT_PASSWORD}" | debconf-set-selections && \
@@ -115,8 +121,8 @@ RUN apt-get update && \
     chmod +x /scripts/start-mysql.sh && \
     echo "#! /bin/sh" > /scripts/stop-mysql.sh && \
     echo "/etc/init.d/mysql stop" >> /scripts/stop-mysql.sh && \
-    chmod +x /scripts/stop-mysql.sh && \
-    echo "# ---------------------------------------------" && \
+    chmod +x /scripts/stop-mysql.sh 
+RUN    echo "# ---------------------------------------------" && \
     echo "# Notes" && \
     echo "# ---------------------------------------------" && \
     echo "alias hist='f(){ history | grep \"\$1\";  unset -f f; }; f'" >> ~/.bashrc && \
@@ -128,14 +134,15 @@ RUN apt-get update && \
     apt-get -y clean && \
     apt-get -y autoremove && \
     rm -rf /var/lib/apt/lists/* && \
-    echo "*************" && \
-    echo "*************" && \
+    echo "*************" 
+
+RUN echo "*************" && \
     echo "" >> /scripts/notes.txt
 
 ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
 #ENV JAVA_HOME ENV JAVA_HOME /usr/lib/jvm/java-1.9.0-openjdk-amd64
 #ENV JAVA_HOME /usr
-ENV PATH $PATH:$JAVA_HOME/bin:/scripts:/home
+ENV PATH $PATH:/usr/local/julia:$JAVA_HOME/bin:/scripts:/home
 
 
 # Old stuff but most have been converted to apt-get installs now
