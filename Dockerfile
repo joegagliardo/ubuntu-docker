@@ -39,3 +39,8 @@ USER root
     curl --progress-bar https://julialang-s3.julialang.org/bin/linux/x64/1.0/julia-1.0.1-linux-x86_64.tar.gz | tar -xz -C /usr/local/ && \
     ln -s /usr/local/julia* /usr/local/julia 
 ENV PATH $PATH:/usr/local/julia:$JAVA_HOME/bin:/scripts:/home
+
+1226 UAL 341 pm
+001231525323a
+239a
+L3BBKN
