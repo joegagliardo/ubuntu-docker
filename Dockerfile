@@ -34,19 +34,15 @@ ARG JULIA_FILE=julia-${JULIA_VERSION}-linux-x86_64.tar
 #ARG SHA=beb91419245395bd69a4a6edad5ca3ec1a8b64e41457672dc687c173a495f034
 
 ARG DEBIAN_FRONTEND=noninteractive
-ADD downloads/foo downloads/tars/${JULIA_FILE} /usr/local/
+#ADD downloads/foo downloads/tars/${JULIA_FILE} /usr/local/
 
 USER root
 
 # Install Dev Tools & Java
-RUN apt-get update && \
-    echo "# ---------------------------------------------" && \
-    echo "# Julia" && \
-    echo "# ---------------------------------------------" && \
-    ln -s /usr/local/julia* /usr/local/julia && \
-    echo "# ---------------------------------------------" && \
+RUN echo "# ---------------------------------------------" && \
     echo "# OS tools" && \
     echo "# ---------------------------------------------" && \
+    apt-get update && \
     apt-get -y install curl tar sudo openssh-server openssh-client unzip rsync nano vim software-properties-common git python2.7 python-dev gcc apt-utils netcat debconf apt-transport-https net-tools libaio-dev aptitude libgmp3-dev libmysqlclient-dev && \
     apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8 && \
     echo "# R repository" && \
@@ -61,6 +57,11 @@ RUN apt-get update && \
     mkdir /scripts && \
     mkdir /data && \
     cd /home && \
+    echo "# ---------------------------------------------" && \
+    echo "# Julia" && \
+    echo "# ---------------------------------------------" && \
+    curl --progress-bar https://julialang-s3.julialang.org/bin/linux/x64/1.0/julia-1.0.1-linux-x86_64.tar.gz | tar -xz -C /usr/local/ && \    
+    ln -s /usr/local/julia* /usr/local/julia && \
     echo "# ---------------------------------------------" && \
     echo "# Java" && \
     echo "# ---------------------------------------------" && \
