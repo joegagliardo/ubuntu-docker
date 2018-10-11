@@ -45,12 +45,6 @@ RUN echo "# ---------------------------------------------" && \
     mkdir /data && \
     cd /home && \
     echo "# ---------------------------------------------" && \
-    echo "# Julia" && \
-    echo ${JULIA_URL} && \
-    echo "# ---------------------------------------------" && \
-    curl -s ${JULIA_URL} | tar -xz -C /usr/local/ && \    
-    ln -s /usr/local/julia* /usr/local/julia && \
-    echo "# ---------------------------------------------" && \
     echo "# Java" && \
     echo "# ---------------------------------------------" && \
     echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections && \
@@ -60,8 +54,8 @@ RUN echo "# ---------------------------------------------" && \
     echo "# Maven Scala SBT NodeJS NPM Sqlite3" && \
     echo "# ---------------------------------------------" && \
     apt-get -y install maven scala sbt nodejs npm sqlite3 libsqlite3-dev && \
-    echo ""
-RUN echo "# ---------------------------------------------" && \
+    echo "" && \
+    echo "# ---------------------------------------------" && \
     echo "# Python" && \
     echo "# ---------------------------------------------" && \
     wget ${PIP_URL} && \
@@ -138,6 +132,12 @@ ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
 #ENV JAVA_HOME /usr
 ENV PATH $PATH:/usr/local/julia:$JAVA_HOME/bin:/scripts:/home
 
+#    echo "# ---------------------------------------------" && \
+#    echo "# Julia" && \
+#    echo ${JULIA_URL} && \
+#    echo "# ---------------------------------------------" && \
+#    curl -s ${JULIA_URL} | tar -xz -C /usr/local/ && \    
+#    ln -s /usr/local/julia* /usr/local/julia && \
 
 # Old stuff but most have been converted to apt-get installs now
 # 2018-01-19 removed R but need to fix.
