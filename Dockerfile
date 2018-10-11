@@ -48,7 +48,7 @@ RUN echo "# ---------------------------------------------" && \
     echo "# Julia" && \
     echo ${JULIA_URL} && \
     echo "# ---------------------------------------------" && \
-    curl --progress-bar ${JULIA_URL} | tar -xz -C /usr/local/ && \    
+    curl -s ${JULIA_URL} | tar -xz -C /usr/local/ && \    
     ln -s /usr/local/julia* /usr/local/julia && \
     echo "# ---------------------------------------------" && \
     echo "# Java" && \
@@ -60,7 +60,8 @@ RUN echo "# ---------------------------------------------" && \
     echo "# Maven Scala SBT NodeJS NPM Sqlite3" && \
     echo "# ---------------------------------------------" && \
     apt-get -y install maven scala sbt nodejs npm sqlite3 libsqlite3-dev && \
-    echo "# ---------------------------------------------" && \
+    echo ""
+RUN echo "# ---------------------------------------------" && \
     echo "# Python" && \
     echo "# ---------------------------------------------" && \
     wget ${PIP_URL} && \
