@@ -16,25 +16,9 @@ ARG JULIA_BASE_URL=https://julialang-s3.julialang.org/bin/linux/x64/1.0
 ARG JULIA_FILE=julia-${JULIA_VERSION}-linux-x86_64.tar.gz
 ARG JULIA_URL=${JULIA_BASE_URL}/${JULIA_FILE}
 
+ARG PIP_URL=https://bootstrap.pypa.io/get-pip.py
+
 ARG LIBPNG_URL=http://mirrors.kernel.org/ubuntu/pool/main/libp/libpng/libpng12-0_1.2.54-1ubuntu1_amd64.deb
-
-
-#ARG MAVEN_VERSION=3.5.2
-#ARG MAVEN_BASE_URL=http://apache.claz.org/maven/maven-3
-#ARG MAVEN_URL=${MAVEN_BASE_URL}/${MAVEN_VERSION}/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz
-
-#ARG SCALA_VERSION=2.11.11
-#ARG SCALA_BASE_URL=http://www.scala-lang.org/files/archive
-#ARG SCALA_URL=${SCALA_BASE_URL}/scala-${SCALA_VERSION}.deb
-#http://www.scala-lang.org/files/archive/scala-2.11.11.deb
-
-#ARG SBT_VERSION=1.1.0
-#ARG SBT_BASE_URL=https://dl.bintray.com/sbt/debian/sbt
-#ARG SBT_URL=${SBT_BASE_URL}-${SBT_VERSION}.deb
-
-# Maven
-#ARG USER_HOME_DIR="/root"
-#ARG SHA=beb91419245395bd69a4a6edad5ca3ec1a8b64e41457672dc687c173a495f034
 
 ARG DEBIAN_FRONTEND=noninteractive
 #ADD downloads/foo downloads/tars/${JULIA_FILE} /usr/local/
@@ -61,11 +45,8 @@ RUN echo "# ---------------------------------------------" && \
     mkdir /data && \
     cd /home && \
     echo "# ---------------------------------------------" && \
-    echo "# Maven Scala SBT NodeJS NPM Sqlite3" && \
-    echo "# ---------------------------------------------" && \
-    apt-get -y install maven scala sbt nodejs npm sqlite3 libsqlite3-dev && \
-    echo "# ---------------------------------------------" && \
     echo "# Julia" && \
+    echo ${JULIA_URL} && \
     echo "# ---------------------------------------------" && \
     curl --progress-bar ${JULIA_URL} | tar -xz -C /usr/local/ && \    
     ln -s /usr/local/julia* /usr/local/julia && \
@@ -76,9 +57,13 @@ RUN echo "# ---------------------------------------------" && \
     apt-get -y install oracle-java8-installer build-essential && \
     echo "----> uncomment -----> apt-get -y install openjdk-9-jdk build-essential" && \
     echo "# ---------------------------------------------" && \
+    echo "# Maven Scala SBT NodeJS NPM Sqlite3" && \
+    echo "# ---------------------------------------------" && \
+    apt-get -y install maven scala sbt nodejs npm sqlite3 libsqlite3-dev && \
+    echo "# ---------------------------------------------" && \
     echo "# Python" && \
     echo "# ---------------------------------------------" && \
-    wget https://bootstrap.pypa.io/get-pip.py && \
+    wget ${PIP_URL} && \
     echo "----> ln -s /usr/bin/python2.7 /usr/bin/python" && \
     echo "----> ln -s /usr/bin/python2.7 /usr/bin/python2" && \
     python get-pip.py && \
@@ -285,3 +270,20 @@ ENV PATH $PATH:/usr/local/julia:$JAVA_HOME/bin:/scripts:/home
 
 #    curl --progress-bar https://julialang-s3.julialang.org/bin/linux/x64/1.0/julia-1.0.1-linux-x86_64.tar.gz | tar -xz -C /usr/local/ && \
 # git filter-branch --index-filter 'git rm -r --cached --ignore-unmatch <file/dir>' HEAD
+
+#ARG MAVEN_VERSION=3.5.2
+#ARG MAVEN_BASE_URL=http://apache.claz.org/maven/maven-3
+#ARG MAVEN_URL=${MAVEN_BASE_URL}/${MAVEN_VERSION}/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz
+
+#ARG SCALA_VERSION=2.11.11
+#ARG SCALA_BASE_URL=http://www.scala-lang.org/files/archive
+#ARG SCALA_URL=${SCALA_BASE_URL}/scala-${SCALA_VERSION}.deb
+#http://www.scala-lang.org/files/archive/scala-2.11.11.deb
+
+#ARG SBT_VERSION=1.1.0
+#ARG SBT_BASE_URL=https://dl.bintray.com/sbt/debian/sbt
+#ARG SBT_URL=${SBT_BASE_URL}-${SBT_VERSION}.deb
+
+# Maven
+#ARG USER_HOME_DIR="/root"
+#ARG SHA=beb91419245395bd69a4a6edad5ca3ec1a8b64e41457672dc687c173a495f034
