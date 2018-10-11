@@ -13,8 +13,8 @@ USER root
 # Versions
 ARG JULIA_VERSION=1.0.1
 ARG JULIA_BASE_URL=https://julialang-s3.julialang.org/bin/linux/x64/1.0
-ARG JULIA_URL=${JULIA_BASE_URL}/julia-${JULIA_VERSION}-linux-x86_64.tar.gz
-ARG JULIA_FILE=julia-${JULIA_VERSION}-linux-x86_64.tar
+ARG JULIA_FILE=julia-${JULIA_VERSION}-linux-x86_64.tar.gz
+ARG JULIA_URL=${JULIA_BASE_URL}/${JULIA_FILE}
 
 ARG LIBPNG_URL=http://mirrors.kernel.org/ubuntu/pool/main/libp/libpng/libpng12-0_1.2.54-1ubuntu1_amd64.deb
 
@@ -284,3 +284,4 @@ ENV PATH $PATH:/usr/local/julia:$JAVA_HOME/bin:/scripts:/home
 
 
 #    curl --progress-bar https://julialang-s3.julialang.org/bin/linux/x64/1.0/julia-1.0.1-linux-x86_64.tar.gz | tar -xz -C /usr/local/ && \
+# git filter-branch --index-filter 'git rm -r --cached --ignore-unmatch <file/dir>' HEAD
