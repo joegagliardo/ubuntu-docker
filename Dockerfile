@@ -13,8 +13,11 @@ USER root
 # Versions
 ARG JULIA_VERSION=1.0.1
 ARG JULIA_BASE_URL=https://julialang-s3.julialang.org/bin/linux/x64/1.0
-ARG JULIA_URL=${JULIA_BASE_URL}/julia-${JULIA_VERSION}-linux-x86_64.tar
+ARG JULIA_URL=${JULIA_BASE_URL}/julia-${JULIA_VERSION}-linux-x86_64.tar.gz
 ARG JULIA_FILE=julia-${JULIA_VERSION}-linux-x86_64.tar
+
+ARG LIBPNG_URL=http://mirrors.kernel.org/ubuntu/pool/main/libp/libpng/libpng12-0_1.2.54-1ubuntu1_amd64.deb
+
 
 #ARG MAVEN_VERSION=3.5.2
 #ARG MAVEN_BASE_URL=http://apache.claz.org/maven/maven-3
@@ -58,9 +61,13 @@ RUN echo "# ---------------------------------------------" && \
     mkdir /data && \
     cd /home && \
     echo "# ---------------------------------------------" && \
+    echo "# Maven Scala SBT NodeJS NPM Sqlite3" && \
+    echo "# ---------------------------------------------" && \
+    apt-get -y install maven scala sbt nodejs npm sqlite3 libsqlite3-dev && \
+    echo "# ---------------------------------------------" && \
     echo "# Julia" && \
     echo "# ---------------------------------------------" && \
-    curl --progress-bar https://julialang-s3.julialang.org/bin/linux/x64/1.0/julia-1.0.1-linux-x86_64.tar.gz | tar -xz -C /usr/local/ && \    
+    curl --progress-bar ${JULIA_URL} | tar -xz -C /usr/local/ && \    
     ln -s /usr/local/julia* /usr/local/julia && \
     echo "# ---------------------------------------------" && \
     echo "# Java" && \
@@ -68,18 +75,6 @@ RUN echo "# ---------------------------------------------" && \
     echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections && \
     apt-get -y install oracle-java8-installer build-essential && \
     echo "----> uncomment -----> apt-get -y install openjdk-9-jdk build-essential" && \
-    echo "# ---------------------------------------------" && \
-    echo "# Maven Scala SBT NodeJS NPM Sqlite3" && \
-    echo "# ---------------------------------------------" && \
-    apt-get install -y maven scala sbt nodejs npm sqlite3 libsqlite3-dev && \
-    echo "# ---------------------------------------------" && \
-    echo "# R" && \
-    echo "# ---------------------------------------------" && \
-    cd /home && \
-    wget http://mirrors.kernel.org/ubuntu/pool/main/libp/libpng/libpng12-0_1.2.54-1ubuntu1_amd64.deb && \
-    dpkg -i libpng12-0_1.2.54-1ubuntu1_amd64.deb && \
-    DEBIAN_FRONTEND=noninteractive apt-get -y install gdebi libxml2-dev libssl-dev libcurl4-openssl-dev libopenblas-dev && \
-    aptitude install -y r-cran-spatial r-cran-boot r-recommended r-base-core r-base r-base-html && \
     echo "# ---------------------------------------------" && \
     echo "# Python" && \
     echo "# ---------------------------------------------" && \
@@ -103,9 +98,17 @@ RUN echo "# ---------------------------------------------" && \
     pip3 install cherrypy && \
     echo "----> fix ----> install pymssql" && \
     echo "----> fix ----> pip3 install pymssql" && \
-    DEBIAN_FRONTEND=noninteractive apt-get -yq build-dep python-matplotlib && \
+    apt-get -yq build-dep python-matplotlib && \
     pip2 install matplotlib && \
     pip3 install matplotlib && \
+    echo "# ---------------------------------------------" && \
+    echo "# R" && \
+    echo "# ---------------------------------------------" && \
+    cd /home && \
+    wget ${LIBPNG_URL} && \
+    dpkg -i libpng12-0_1.2.54-1ubuntu1_amd64.deb && \
+    apt-get -y install gdebi libxml2-dev libssl-dev libcurl4-openssl-dev libopenblas-dev && \
+    aptitude install -y r-cran-spatial r-cran-boot r-recommended r-base-core r-base r-base-html && \
     echo "# ---------------------------------------------" && \
     echo "# MYSQL" && \
     echo "# ---------------------------------------------" && \
