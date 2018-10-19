@@ -43,8 +43,7 @@ RUN echo "# ---------------------------------------------" && \
     apt-get update && \
     mkdir /scripts && \
     mkdir /data && \
-    echo ""
-RUN    echo "# ---------------------------------------------" && \
+    echo "# ---------------------------------------------" && \
     echo "# Python" && \
     echo "# ---------------------------------------------" && \
     apt-get -yq --fix-missing build-dep python-matplotlib && \
@@ -59,8 +58,7 @@ RUN    echo "# ---------------------------------------------" && \
     pip2 install pymssql && \
     pip3 install pymssql && \
     cd /home && \
-    echo "" 
-RUN    echo "# ---------------------------------------------" && \
+    echo "# ---------------------------------------------" && \
     echo "# Java" && \
     echo "# ---------------------------------------------" && \
     echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections && \
