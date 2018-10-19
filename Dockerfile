@@ -30,7 +30,7 @@ RUN echo "# ---------------------------------------------" && \
     echo "# OS tools" && \
     echo "# ---------------------------------------------" && \
     apt-get update && \
-    apt-get -y install curl tar sudo openssh-server openssh-client unzip rsync nano vim software-properties-common git python2.7 python-dev gcc apt-utils netcat debconf apt-transport-https net-tools libaio-dev aptitude libgmp3-dev libmysqlclient-dev && \
+    apt-get -y install curl tar sudo openssh-server openssh-client unzip rsync nano vim software-properties-common git gcc apt-utils netcat debconf apt-transport-https net-tools libaio-dev aptitude libgmp3-dev libmysqlclient-dev python2.7 python2.7-dev python3.7 python3.7-dev python-pip python3-pip && \
     apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8 && \
     echo "# R repository" && \
     apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 && \
@@ -43,8 +43,24 @@ RUN echo "# ---------------------------------------------" && \
     apt-get update && \
     mkdir /scripts && \
     mkdir /data && \
-    cd /home && \
+    echo ""
+RUN    echo "# ---------------------------------------------" && \
+    echo "# Python" && \
     echo "# ---------------------------------------------" && \
+    apt-get -yq --fix-missing build-dep python-matplotlib && \
+    pip2 install numpy && \
+    pip3 install numpy && \
+    pip2 install scipy && \
+    pip3 install scipy && \
+    pip2 install pandas && \
+    pip3 install pandas && \
+    pip2 install cherrypy && \
+    pip3 install cherrypy && \
+    pip2 install pymssql && \
+    pip3 install pymssql && \
+    cd /home && \
+    echo "" 
+RUN    echo "# ---------------------------------------------" && \
     echo "# Java" && \
     echo "# ---------------------------------------------" && \
     echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections && \
@@ -55,32 +71,6 @@ RUN echo "# ---------------------------------------------" && \
     echo "# ---------------------------------------------" && \
     apt-get -y install maven scala sbt nodejs npm sqlite3 libsqlite3-dev && \
     echo "" && \
-    echo "# ---------------------------------------------" && \
-    echo "# Python" && \
-    echo "# ---------------------------------------------" && \
-    wget ${PIP_URL} && \
-    echo "----> ln -s /usr/bin/python2.7 /usr/bin/python" && \
-    echo "----> ln -s /usr/bin/python2.7 /usr/bin/python2" && \
-    python get-pip.py && \
-    python3 get-pip.py && \
-    rm /usr/local/bin/pip && \
-    ln -s /usr/local/bin/pip2 /usr/local/bin/pip && \
-    mv get-pip.py /scripts && \
-    pip install --upgrade pip && \
-    pip3 install --upgrade pip && \
-    pip2 install numpy && \
-    pip3 install numpy && \
-    pip2 install scipy && \
-    pip3 install scipy && \
-    pip2 install pandas && \
-    pip3 install pandas && \
-    pip2 install cherrypy && \
-    pip3 install cherrypy && \
-    echo "----> fix ----> install pymssql" && \
-    echo "----> fix ----> pip3 install pymssql" && \
-    apt-get -yq build-dep python-matplotlib && \
-    pip2 install matplotlib && \
-    pip3 install matplotlib && \
     echo "# ---------------------------------------------" && \
     echo "# R" && \
     echo "# ---------------------------------------------" && \
@@ -288,3 +278,22 @@ ENV PATH $PATH:/usr/local/julia:$JAVA_HOME/bin:/scripts:/home
 # Maven
 #ARG USER_HOME_DIR="/root"
 #ARG SHA=beb91419245395bd69a4a6edad5ca3ec1a8b64e41457672dc687c173a495f034
+
+
+
+#   wget ${PIP_URL} && \
+#    echo "----> ln -s /usr/bin/python2.7 /usr/bin/python" && \
+#    echo "----> ln -s /usr/bin/python2.7 /usr/bin/python2" && \
+#    echo ""
+#RUN    python get-pip.py && \
+#    echo ""
+#RUN  python3 get-pip.py" && \
+#    echo ""
+#RUN    rm /usr/local/bin/pip && \
+#    ln -s /usr/local/bin/pip2 /usr/local/bin/pip && \
+#    mv get-pip.py /scripts && \
+#    pip2 install --upgrade pip && \
+#    pip3 install --upgrade pip && \
+#     ln -s /usr/bin/pip /usr/bin/pip2 && \
+#    pip2 install matplotlib && \
+#    pip3 install matplotlib && \
