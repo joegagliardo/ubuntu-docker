@@ -46,7 +46,6 @@ RUN echo "# ---------------------------------------------" && \
     echo "# ---------------------------------------------" && \
     echo "# Python" && \
     echo "# ---------------------------------------------" && \
-    apt-get -yq --fix-missing build-dep python-matplotlib && \
     pip2 install numpy && \
     pip3 install numpy && \
     pip2 install scipy && \
@@ -55,8 +54,11 @@ RUN echo "# ---------------------------------------------" && \
     pip3 install pandas && \
     pip2 install cherrypy && \
     pip3 install cherrypy && \
+    pip2 install pymysql && \
+    pip3 install pymysql && \
     pip2 install pymssql && \
     pip3 install pymssql && \
+    apt-get -yq --fix-missing build-dep python-matplotlib && \
     cd /home && \
     echo "# ---------------------------------------------" && \
     echo "# Java" && \
