@@ -44,6 +44,12 @@ RUN echo "# ---------------------------------------------" && \
     mkdir /scripts && \
     mkdir /data && \
     echo "# ---------------------------------------------" && \
+    echo "# Julia" && \
+    echo ${JULIA_URL} && \
+    echo "# ---------------------------------------------" && \
+    curl -s ${JULIA_URL} | tar -xz -C /usr/local/ && \    
+    ln -s /usr/local/julia* /usr/local/julia && \
+    echo "# ---------------------------------------------" && \
     echo "# Python" && \
     echo "# ---------------------------------------------" && \
     pip2 install numpy && \
@@ -120,7 +126,7 @@ RUN echo "# ---------------------------------------------" && \
 ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
 #ENV JAVA_HOME ENV JAVA_HOME /usr/lib/jvm/java-1.9.0-openjdk-amd64
 #ENV JAVA_HOME /usr
-ENV PATH $PATH:/usr/local/julia:$JAVA_HOME/bin:/scripts:/home
+ENV PATH $PATH:/usr/local/julia/bin:$JAVA_HOME/bin:/scripts:/home
 
 #    echo "# ---------------------------------------------" && \
 #    echo "# Julia" && \
