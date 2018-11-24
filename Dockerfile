@@ -31,7 +31,6 @@ ADD scripts /scripts
 RUN echo "# ---------------------------------------------" && \
     echo "# Environment" && \
     echo "# ---------------------------------------------" && \
-    mkdir /scripts && \
     mkdir /data && \
     echo "# needed to stop the error message for matplotlib" && \
     sed -Ei 's/^# deb-src /deb-src /' /etc/apt/sources.list && \
