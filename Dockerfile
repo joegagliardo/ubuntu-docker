@@ -48,9 +48,7 @@ RUN echo "# ---------------------------------------------" && \
     echo ${JULIA_URL} && \
     echo "# ---------------------------------------------" && \
     cd /tmp && \
-    wget ${JULIA_URL} && \
-    tar -xzF /tmp/julia* -C /usr/local && \ 
-    rm /tmp/julia* && \
+    curl -s ${JULIA_URL} | tar -xzM -C /usr/local/ && \    
     ln -s /usr/local/julia* /usr/local/julia && \
     echo "# ---------------------------------------------" && \
     echo "# Python" && \
@@ -311,3 +309,7 @@ ENV PATH $PATH:/usr/local/julia/bin:$JAVA_HOME/bin:/scripts:/home
 #    pip3 install pymssql && \
 #     curl -s ${JULIA_URL} | tar -xz -C /usr/local/ && \    
 
+
+#    wget ${JULIA_URL} && \
+#    tar -xzF /tmp/julia* -C /usr/local && \ 
+#    rm /tmp/julia* && \
