@@ -27,8 +27,6 @@ USER root
 #ADD downloads/foo downloads/${JULIA_FILE}* ${JULIA_URL} /usr/local/
 ADD downloads/foo ${JULIA_URL} /usr/local/
 
-RUN echo "oops
-
 # Install Dev Tools & Java
 RUN echo "# ---------------------------------------------" && \
     echo "# OS tools" && \
