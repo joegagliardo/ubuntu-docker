@@ -31,8 +31,6 @@ RUN echo "# ---------------------------------------------" && \
     echo "# ---------------------------------------------" && \
     apt-get update && \
     apt-get -y install curl tar sudo openssh-server openssh-client unzip rsync nano vim software-properties-common git gcc apt-utils netcat debconf apt-transport-https net-tools libaio-dev aptitude libgmp3-dev libmysqlclient-dev python2.7 python2.7-dev python3.7 python3.7-dev python-pip python3-pip clang libicu-dev && \
-    apt-get install -y --no-install-recommends bsdtar && \
-    export tar='bsdtar' && \
     apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8 && \
     echo "# R repository" && \
     apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 && \
@@ -49,13 +47,16 @@ RUN echo "# ---------------------------------------------" && \
     echo "# Julia" && \
     echo ${JULIA_URL} && \
     echo "# ---------------------------------------------" && \
-    curl -s ${JULIA_URL} | tar -xz -C /usr/local/ && \    
+    cd /tmp && \
+    wget ${JULIA_URL} && \
+    tar -xzF /tmp/julia* -C /usr/local/julia && \ 
+    rm /tmp/julia* && \
     ln -s /usr/local/julia* /usr/local/julia && \
     echo "# ---------------------------------------------" && \
     echo "# Python" && \
     echo "# ---------------------------------------------" && \
-    pip2 install numpy scipy pandas cherrypy pymysql pymssql sklearn py4j pyspark && \
-    pip3 install numpy scipy pandas cherrypy pymysql pymssql sklearn py4j pyspark && \
+    pip2 install numpy scipy pandas cherrypy pymysql pymssql sklearn py4j && \
+    pip3 install numpy scipy pandas cherrypy pymysql pymssql sklearn py4j && \
     apt-get -yq --fix-missing build-dep python-matplotlib && \
     cd /home && \
     echo "# ---------------------------------------------" && \
@@ -308,4 +309,5 @@ ENV PATH $PATH:/usr/local/julia/bin:$JAVA_HOME/bin:/scripts:/home
 #    pip3 install pymysql && \
 #    pip2 install pymssql && \
 #    pip3 install pymssql && \
+#     curl -s ${JULIA_URL} | tar -xz -C /usr/local/ && \    
 
