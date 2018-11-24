@@ -4,11 +4,12 @@ MAINTAINER joegagliardo
 
 EXPOSE 50020 50090 50070 50010 50075 8031 8032 8033 8040 8042 49707 22 8088 8030 3306
 
+USER root
+ARG DEBIAN_FRONTEND=noninteractive
+
 # MYSQL Passwords
 ARG MYSQLROOT_PASSWORD=rootpassword
 ARG MYSQL_PASSWORD=
-
-USER root
 
 # Versions
 ARG JULIA_VERSION=1.0.2
@@ -18,14 +19,13 @@ ARG JULIA_URL=${JULIA_BASE_URL}/${JULIA_FILE}
 
 ARG PIP_URL=https://bootstrap.pypa.io/get-pip.py
 
+# needed for R
 ARG LIBPNG_URL=http://mirrors.kernel.org/ubuntu/pool/main/libp/libpng/libpng12-0_1.2.54-1ubuntu1_amd64.deb
 
-ARG DEBIAN_FRONTEND=noninteractive
-#ADD downloads/foo downloads/tars/${JULIA_FILE} /usr/local/
+ADD downloads/foo downloads/${JULIA_FILE}* /usr/local/
 
-USER root
-#ADD downloads/foo downloads/${JULIA_FILE}* ${JULIA_URL} /usr/local/
-ADD downloads/foo ${JULIA_URL} /usr/local/
+#RUN echo "oops
+
 
 # Install Dev Tools & Java
 RUN echo "# ---------------------------------------------" && \
@@ -50,6 +50,7 @@ RUN echo "# ---------------------------------------------" && \
     echo ${JULIA_URL} && \
     echo "# ---------------------------------------------" && \
     cd /tmp && \
+    test ! -e /usr/local/julia* && curl -s ${JULIA_URL} | tar -xzM -C /usr/local/ && \
     ln -s /usr/local/julia* /usr/local/julia && \
     echo "# ---------------------------------------------" && \
     echo "# Python" && \
