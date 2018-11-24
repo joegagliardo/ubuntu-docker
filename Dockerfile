@@ -24,6 +24,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 #ADD downloads/foo downloads/tars/${JULIA_FILE} /usr/local/
 
 USER root
+ADD ${JULIA_URL} /usr/local
 
 # Install Dev Tools & Java
 RUN echo "# ---------------------------------------------" && \
@@ -48,7 +49,6 @@ RUN echo "# ---------------------------------------------" && \
     echo ${JULIA_URL} && \
     echo "# ---------------------------------------------" && \
     cd /tmp && \
-    curl -s ${JULIA_URL} | tar -xzM -C /usr/local/ && \    
     ln -s /usr/local/julia* /usr/local/julia && \
     echo "# ---------------------------------------------" && \
     echo "# Python" && \
@@ -313,3 +313,4 @@ ENV PATH $PATH:/usr/local/julia/bin:$JAVA_HOME/bin:/scripts:/home
 #    wget ${JULIA_URL} && \
 #    tar -xzF /tmp/julia* -C /usr/local && \ 
 #    rm /tmp/julia* && \
+#     curl -s ${JULIA_URL} | tar -xzM -C /usr/local/ && \    
