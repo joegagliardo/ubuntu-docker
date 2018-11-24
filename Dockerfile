@@ -39,6 +39,17 @@ RUN echo "# ---------------------------------------------" && \
     echo "# ---------------------------------------------" && \
     apt-get update && \
     apt-get -y install curl tar sudo openssh-server openssh-client unzip rsync nano vim software-properties-common git gcc apt-utils netcat debconf apt-transport-https net-tools libaio-dev aptitude libgmp3-dev libmysqlclient-dev python2.7 python2.7-dev python3.7 python3.7-dev python-pip python3-pip clang libicu-dev && \
+    apk --no-cache --update-cache add gcc gfortran python python-dev py-pip build-base wget freetype-dev libpng-dev openblas-dev && \
+    echo "# ---------------------------------------------" && \
+    echo "# Python 2" && \
+    echo "# ---------------------------------------------" && \
+    pip2 install numpy scipy pandas cherrypy pymysql pymssql sklearn py4j matplotlib && \
+    pip2 install pyspark && \
+    echo "# ---------------------------------------------" && \
+    echo "# Python 3" && \
+    echo "# ---------------------------------------------" && \
+    pip3 install numpy scipy pandas cherrypy pymysql pymssql sklearn py4j matplotlib && \
+    pip3 install --no-cache-dir pyspark && \
     echo "# ---------------------------------------------" && \
     echo "# Java repository" && \
     echo "# ---------------------------------------------" && \
@@ -59,28 +70,12 @@ RUN echo "# ---------------------------------------------" && \
     echo "# ---------------------------------------------" && \
     apt-get install -y openjdk-11-jdk build-essential maven scala sbt nodejs npm sqlite3 libsqlite3-dev && \
     echo "# ---------------------------------------------" && \
-    echo "# MatPlotLib" && \
-    echo "# ---------------------------------------------" && \
-    apt-get -yq --fix-missing build-dep python-matplotlib && \
-    apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8 && \
-    echo "# ---------------------------------------------" && \
     echo "# Julia" && \
     echo ${JULIA_URL} && \
     echo "# ---------------------------------------------" && \
     cd /tmp && \
     test ! -e /usr/local/julia* && curl -s ${JULIA_URL} | tar -xz -C /usr/local/ || echo "Julia exists" && \
     ln -s /usr/local/julia* /usr/local/julia && \
-    echo "# ---------------------------------------------" && \
-    echo "# Python 2" && \
-    echo "# ---------------------------------------------" && \
-    pip2 install --no-cache-dir numpy scipy pandas cherrypy pymysql pymssql sklearn py4j && \
-    pip2 install --no-cache-dir pyspark && \
-    echo "# ---------------------------------------------" && \
-    echo "# Python 3" && \
-    echo "# ---------------------------------------------" && \
-    pip3 install --no-cache-dir numpy scipy pandas cherrypy pymysql pymssql sklearn py4j && \
-    pip3 install --no-cache-dir pyspark && \
-    cd /home && \
     echo "" && \
     echo "# ---------------------------------------------" && \
     echo "# R" && \
@@ -131,6 +126,13 @@ RUN echo "# ---------------------------------------------" && \
 
 ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-amd64
 ENV PATH $PATH:/usr/local/julia/bin:$JAVA_HOME/bin:/scripts:/host:/home
+
+#    echo "# ---------------------------------------------" && \
+#    echo "# MatPlotLib" && \
+#    echo "# ---------------------------------------------" && \
+#    apt-get -yq --fix-missing build-dep python-matplotlib && \
+#    apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8 && \
+
 
 #    echo "# ---------------------------------------------" && \
 #    echo "# Julia" && \
