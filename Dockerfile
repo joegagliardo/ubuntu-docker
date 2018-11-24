@@ -49,7 +49,7 @@ RUN echo "# ---------------------------------------------" && \
     echo "# ---------------------------------------------" && \
     cd /tmp && \
     wget ${JULIA_URL} && \
-    tar -xzF /tmp/julia* -C /usr/local/julia && \ 
+    tar -xzF /tmp/julia* -C /usr/local && \ 
     rm /tmp/julia* && \
     ln -s /usr/local/julia* /usr/local/julia && \
     echo "# ---------------------------------------------" && \
