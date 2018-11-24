@@ -50,7 +50,7 @@ RUN echo "# ---------------------------------------------" && \
     echo ${JULIA_URL} && \
     echo "# ---------------------------------------------" && \
     cd /tmp && \
-    test ! -e /usr/local/julia* && curl -s ${JULIA_URL} | tar -xzM -C /usr/local/ && \
+    test ! -e /usr/local/julia* && curl -s ${JULIA_URL} | tar -xz -C /usr/local/ && \
     ln -s /usr/local/julia* /usr/local/julia && \
     echo "# ---------------------------------------------" && \
     echo "# Python" && \
