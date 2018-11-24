@@ -11,7 +11,7 @@ ARG MYSQL_PASSWORD=
 USER root
 
 # Versions
-ARG JULIA_VERSION=1.0.1
+ARG JULIA_VERSION=1.0.2
 ARG JULIA_BASE_URL=https://julialang-s3.julialang.org/bin/linux/x64/1.0
 ARG JULIA_FILE=julia-${JULIA_VERSION}-linux-x86_64.tar.gz
 ARG JULIA_URL=${JULIA_BASE_URL}/${JULIA_FILE}
@@ -52,18 +52,8 @@ RUN echo "# ---------------------------------------------" && \
     echo "# ---------------------------------------------" && \
     echo "# Python" && \
     echo "# ---------------------------------------------" && \
-    pip2 install numpy && \
-    pip3 install numpy && \
-    pip2 install scipy && \
-    pip3 install scipy && \
-    pip2 install pandas && \
-    pip3 install pandas && \
-    pip2 install cherrypy && \
-    pip3 install cherrypy && \
-    pip2 install pymysql && \
-    pip3 install pymysql && \
-    pip2 install pymssql && \
-    pip3 install pymssql && \
+    pip2 install numpy scipy pandas cherrypy pymysql pymssql sklearn pyspark && \
+    pip3 install numpy scipy pandas cherrypy pymysql pymssql sklearn pyspark && \
     apt-get -yq --fix-missing build-dep python-matplotlib && \
     cd /home && \
     echo "# ---------------------------------------------" && \
@@ -304,3 +294,16 @@ ENV PATH $PATH:/usr/local/julia/bin:$JAVA_HOME/bin:/scripts:/home
 #     ln -s /usr/bin/pip /usr/bin/pip2 && \
 #    pip2 install matplotlib && \
 #    pip3 install matplotlib && \
+
+#    pip3 install numpy && \
+#    pip2 install scipy && \
+#    pip3 install scipy && \
+#    pip2 install pandas && \
+#    pip3 install pandas && \
+#    pip2 install cherrypy && \
+#    pip3 install cherrypy && \
+#    pip2 install pymysql && \
+#    pip3 install pymysql && \
+#    pip2 install pymssql && \
+#    pip3 install pymssql && \
+
