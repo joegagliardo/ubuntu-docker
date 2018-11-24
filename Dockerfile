@@ -70,8 +70,8 @@ RUN echo "# ---------------------------------------------" && \
     echo "# Java" && \
     echo "# ---------------------------------------------" && \
     echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections && \
-    apt-get -y install oracle-java8-installer build-essential && \
-    echo "----> uncomment -----> apt-get -y install openjdk-9-jdk build-essential" && \
+    echo "----> uncomment ----->     apt-get -y install oracle-java8-installer build-essential" && \
+    apt-get -y install openjdk-11-jdk build-essential && \
     echo "# ---------------------------------------------" && \
     echo "# Maven Scala SBT NodeJS NPM Sqlite3" && \
     echo "# ---------------------------------------------" && \
@@ -123,7 +123,8 @@ RUN echo "# ---------------------------------------------" && \
     echo "*************" && \
     echo "" >> /scripts/notes.txt
 
-ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
+ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
+#ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
 #ENV JAVA_HOME ENV JAVA_HOME /usr/lib/jvm/java-1.9.0-openjdk-amd64
 #ENV JAVA_HOME /usr
 ENV PATH $PATH:/usr/local/julia/bin:$JAVA_HOME/bin:/scripts:/home
