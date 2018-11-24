@@ -51,3 +51,5 @@ downloads/pip3/setuptools-40.6.2-py2.py3-none-any.whl
 downloads/pip3/six-1.11.0-py2.py3-none-any.whl
 downloads/pip3/tempora-1.14-py2.py3-none-any.whl
 downloads/.DS_Store
+*.whl
+downloads/.DS_Store

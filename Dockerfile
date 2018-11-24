@@ -26,12 +26,14 @@ ARG LIBPNG_URL=http://mirrors.kernel.org/ubuntu/pool/main/libp/libpng/libpng12-0
 
 ADD downloads/foo downloads/${JULIA_FILE}* /usr/local/
 ADD scripts /scripts
+ADD downloads/foo downloads/pip2 /pip2
+ADD downloads/foo downloads/pip3 /pip3
 
 # Install Dev Tools & Java
 RUN echo "# ---------------------------------------------" && \
     echo "# Environment" && \
     echo "# ---------------------------------------------" && \
-    mkdir /data && \
+    test ! -e /data && mkdir /data || echo "/data exists" && \
     echo "# needed to stop the error message for matplotlib" && \
     sed -Ei 's/^# deb-src /deb-src /' /etc/apt/sources.list && \
     echo "# ---------------------------------------------" && \
@@ -39,17 +41,20 @@ RUN echo "# ---------------------------------------------" && \
     echo "# ---------------------------------------------" && \
     apt-get update && \
     apt-get -y install curl tar sudo openssh-server openssh-client unzip rsync nano vim software-properties-common git gcc apt-utils netcat debconf apt-transport-https net-tools libaio-dev aptitude libgmp3-dev libmysqlclient-dev python2.7 python2.7-dev python3.7 python3.7-dev python-pip python3-pip clang libicu-dev && \
-    apk --no-cache --update-cache add gcc gfortran python python-dev py-pip build-base wget freetype-dev libpng-dev openblas-dev && \
-    echo "# ---------------------------------------------" && \
-    echo "# Python 2" && \
-    echo "# ---------------------------------------------" && \
-    pip2 install numpy scipy pandas cherrypy pymysql pymssql sklearn py4j matplotlib && \
-    pip2 install pyspark && \
     echo "# ---------------------------------------------" && \
     echo "# Python 3" && \
     echo "# ---------------------------------------------" && \
-    pip3 install numpy scipy pandas cherrypy pymysql pymssql sklearn py4j matplotlib && \
-    pip3 install --no-cache-dir pyspark && \
+    rm -rf /root/.pip/cache && \
+    rm -rf ~/.pip/cache/ && \
+    test -e /pip3/foo && pip3 install --no-cache-dir --use-wheel --no-index --find-links=/pip3 numpy scipy pandas cherrypy pymysql pymssql sklearn py4j matplotlib pyspark || install --no-cache-dir numpy scipy pandas cherrypy pymysql pymssql sklearn py4j matplotlib pyspark && \
+    test -e /pip3/foo && rm -r /pip3 && \
+    echo "# ---------------------------------------------" && \
+    echo "# Python 2" && \
+    echo "# ---------------------------------------------" && \
+    rm -rf /root/.pip/cache && \
+    rm -rf ~/.pip/cache/ && \
+    test -e /pip2/foo && pip2 install --no-cache-dir --use-wheel --no-index --find-links=/pip2 numpy scipy pandas cherrypy pymysql pymssql sklearn py4j pyspark || pip2 install --no-cache-dir numpy scipy pandas cherrypy pymysql pymssql sklearn py4j pyspark && \
+    test -e /pip2/foo && rm -r /pip2 && \
     echo "# ---------------------------------------------" && \
     echo "# Java repository" && \
     echo "# ---------------------------------------------" && \
@@ -112,6 +117,7 @@ RUN echo "# ---------------------------------------------" && \
     echo "# Notes" && \
     echo "# ---------------------------------------------" && \
     echo "alias hist='f(){ history | grep \"\$1\";  unset -f f; }; f'" >> ~/.bashrc && \
+    echo "alias python=python3" >> ~/.bashrc && \
     echo "Installation Notes" > /scripts/notes.txt && \
     echo "" >> /scripts/notes.txt && \
     echo "# ---------------------------------------------" && \
