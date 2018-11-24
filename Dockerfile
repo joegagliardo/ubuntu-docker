@@ -30,7 +30,9 @@ RUN echo "# ---------------------------------------------" && \
     echo "# OS tools" && \
     echo "# ---------------------------------------------" && \
     apt-get update && \
-    apt-get -y install curl tar sudo openssh-server openssh-client unzip rsync nano vim software-properties-common git gcc apt-utils netcat debconf apt-transport-https net-tools libaio-dev aptitude libgmp3-dev libmysqlclient-dev python2.7 python2.7-dev python3.7 python3.7-dev python-pip python3-pip && \
+    apt-get -y install curl tar sudo openssh-server openssh-client unzip rsync nano vim software-properties-common git gcc apt-utils netcat debconf apt-transport-https net-tools libaio-dev aptitude libgmp3-dev libmysqlclient-dev python2.7 python2.7-dev python3.7 python3.7-dev python-pip python3-pip clang libicu-dev && \
+    apt-get install -y --no-install-recommends bsdtar && \
+    export tar='bsdtar' && \
     apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8 && \
     echo "# R repository" && \
     apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 && \
@@ -52,8 +54,8 @@ RUN echo "# ---------------------------------------------" && \
     echo "# ---------------------------------------------" && \
     echo "# Python" && \
     echo "# ---------------------------------------------" && \
-    pip2 install numpy scipy pandas cherrypy pymysql pymssql sklearn pyspark && \
-    pip3 install numpy scipy pandas cherrypy pymysql pymssql sklearn pyspark && \
+    pip2 install numpy scipy pandas cherrypy pymysql pymssql sklearn py4j pyspark && \
+    pip3 install numpy scipy pandas cherrypy pymysql pymssql sklearn py4j pyspark && \
     apt-get -yq --fix-missing build-dep python-matplotlib && \
     cd /home && \
     echo "# ---------------------------------------------" && \
