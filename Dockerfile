@@ -1,11 +1,13 @@
 # joegagliardo/ubuntu
+# if building locally use this to save time
+# FROM joegagliardo/ubuntu-base
+# otherwise use this when building on hub.docker.com
 FROM ubuntu:18.10
 MAINTAINER joegagliardo
 
-EXPOSE 50020 50090 50070 50010 50075 8031 8032 8033 8040 8042 49707 22 8088 8030 3306
-
 USER root
 ARG DEBIAN_FRONTEND=noninteractive
+ENV APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=DontWarn
 
 # MYSQL Passwords
 ARG MYSQLROOT_PASSWORD=rootpassword
@@ -23,52 +25,63 @@ ARG PIP_URL=https://bootstrap.pypa.io/get-pip.py
 ARG LIBPNG_URL=http://mirrors.kernel.org/ubuntu/pool/main/libp/libpng/libpng12-0_1.2.54-1ubuntu1_amd64.deb
 
 ADD downloads/foo downloads/${JULIA_FILE}* /usr/local/
-
-#RUN echo "oops
-
+ADD scripts /scripts
 
 # Install Dev Tools & Java
 RUN echo "# ---------------------------------------------" && \
-    echo "# OS tools" && \
+    echo "# Environment" && \
+    echo "# ---------------------------------------------" && \
+    mkdir /scripts && \
+    mkdir /data && \
+    echo "# needed to stop the error message for matplotlib" && \
+    sed -Ei 's/^# deb-src /deb-src /' /etc/apt/sources.list && \
+    echo "# ---------------------------------------------" && \
+    echo "# OS Tools" && \
     echo "# ---------------------------------------------" && \
     apt-get update && \
     apt-get -y install curl tar sudo openssh-server openssh-client unzip rsync nano vim software-properties-common git gcc apt-utils netcat debconf apt-transport-https net-tools libaio-dev aptitude libgmp3-dev libmysqlclient-dev python2.7 python2.7-dev python3.7 python3.7-dev python-pip python3-pip clang libicu-dev && \
-    apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8 && \
-    echo "# R repository" && \
-    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 && \
-    add-apt-repository 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial/' && \
+    echo "# ---------------------------------------------" && \
     echo "# Java repository" && \
+    echo "# ---------------------------------------------" && \
     add-apt-repository ppa:webupd8team/java -y && \
+    echo "# ---------------------------------------------" && \
     echo "# SBT repository" && \
+    echo "# ---------------------------------------------" && \
     echo "deb https://dl.bintray.com/sbt/debian /" | sudo tee -a /etc/apt/sources.list.d/sbt.list && \
 	apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2EE0EA64E40A89B84B2DF73499E82A75642AC823 && \
+    echo "# ---------------------------------------------" && \
+    echo "# R repository" && \
+    echo "# ---------------------------------------------" && \
+    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 && \
+    add-apt-repository 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial/' && \
     apt-get update && \
-    mkdir /scripts && \
-    mkdir /data && \
+    echo "# ---------------------------------------------" && \
+    echo "# Java Maven Scala SBT NodeJS NPM Sqlite3" && \
+    echo "# ---------------------------------------------" && \
+    apt-get install -y openjdk-11-jdk build-essential maven scala sbt nodejs npm sqlite3 libsqlite3-dev && \
+    echo "# ---------------------------------------------" && \
+    echo "# MatPlotLib" && \
+    echo "# ---------------------------------------------" && \
+    apt-get -yq --fix-missing build-dep python-matplotlib && \
+    apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8 && \
     echo "# ---------------------------------------------" && \
     echo "# Julia" && \
     echo ${JULIA_URL} && \
     echo "# ---------------------------------------------" && \
     cd /tmp && \
-    test ! -e /usr/local/julia* && curl -s ${JULIA_URL} | tar -xz -C /usr/local/ && \
+    test ! -e /usr/local/julia* && curl -s ${JULIA_URL} | tar -xz -C /usr/local/ || echo "Julia exists" && \
     ln -s /usr/local/julia* /usr/local/julia && \
     echo "# ---------------------------------------------" && \
-    echo "# Python" && \
+    echo "# Python 2" && \
     echo "# ---------------------------------------------" && \
-    pip2 install numpy scipy pandas cherrypy pymysql pymssql sklearn py4j && \
-    pip3 install numpy scipy pandas cherrypy pymysql pymssql sklearn py4j && \
-    apt-get -yq --fix-missing build-dep python-matplotlib && \
+    pip2 install --no-cache-dir numpy scipy pandas cherrypy pymysql pymssql sklearn py4j && \
+    pip2 install --no-cache-dir pyspark && \
+    echo "# ---------------------------------------------" && \
+    echo "# Python 3" && \
+    echo "# ---------------------------------------------" && \
+    pip3 install --no-cache-dir numpy scipy pandas cherrypy pymysql pymssql sklearn py4j && \
+    pip3 install --no-cache-dir pyspark && \
     cd /home && \
-    echo "# ---------------------------------------------" && \
-    echo "# Java" && \
-    echo "# ---------------------------------------------" && \
-    echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections && \
-    echo "----> uncomment ----->     apt-get -y install oracle-java8-installer build-essential" && \
-    apt-get -y install openjdk-11-jdk build-essential && \
-    echo "# ---------------------------------------------" && \
-    echo "# Maven Scala SBT NodeJS NPM Sqlite3" && \
-    echo "# ---------------------------------------------" && \
-    apt-get -y install maven scala sbt nodejs npm sqlite3 libsqlite3-dev && \
     echo "" && \
     echo "# ---------------------------------------------" && \
     echo "# R" && \
@@ -76,6 +89,7 @@ RUN echo "# ---------------------------------------------" && \
     cd /home && \
     wget ${LIBPNG_URL} && \
     dpkg -i libpng12-0_1.2.54-1ubuntu1_amd64.deb && \
+    rm /home/* && \
     apt-get -y install gdebi libxml2-dev libssl-dev libcurl4-openssl-dev libopenblas-dev && \
     aptitude install -y r-cran-spatial r-cran-boot r-recommended r-base-core r-base r-base-html && \
     echo "# ---------------------------------------------" && \
@@ -104,7 +118,7 @@ RUN echo "# ---------------------------------------------" && \
     echo "# Notes" && \
     echo "# ---------------------------------------------" && \
     echo "alias hist='f(){ history | grep \"\$1\";  unset -f f; }; f'" >> ~/.bashrc && \
-    echo "" > /scripts/notes.txt && \
+    echo "Installation Notes" > /scripts/notes.txt && \
     echo "" >> /scripts/notes.txt && \
     echo "# ---------------------------------------------" && \
 	echo "# Final Cleanup" && \
@@ -112,15 +126,12 @@ RUN echo "# ---------------------------------------------" && \
     apt-get -y clean && \
     apt-get -y autoremove && \
     rm -rf /var/lib/apt/lists/* && \
-    echo "*************" && \
-    echo "*************" && \
-    echo "" >> /scripts/notes.txt
+    echo "# ---------------------------------------------" && \
+	echo "# Done" && \
+    echo "# ---------------------------------------------"
 
-ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
-#ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
-#ENV JAVA_HOME ENV JAVA_HOME /usr/lib/jvm/java-1.9.0-openjdk-amd64
-#ENV JAVA_HOME /usr
-ENV PATH $PATH:/usr/local/julia/bin:$JAVA_HOME/bin:/scripts:/home
+ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-amd64
+ENV PATH $PATH:/usr/local/julia/bin:$JAVA_HOME/bin:/scripts:/host:/home
 
 #    echo "# ---------------------------------------------" && \
 #    echo "# Julia" && \
@@ -316,3 +327,17 @@ ENV PATH $PATH:/usr/local/julia/bin:$JAVA_HOME/bin:/scripts:/home
 #    tar -xzF /tmp/julia* -C /usr/local && \ 
 #    rm /tmp/julia* && \
 #     curl -s ${JULIA_URL} | tar -xzM -C /usr/local/ && \    
+
+
+#    echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections && \
+#    echo "----> uncomment ----->     apt-get -y install oracle-java8-installer build-essential" && \
+
+
+#    echo "# ---------------------------------------------" && \
+#    echo "# Java" && \
+#    echo "# ---------------------------------------------" && \
+#    apt-get -y install openjdk-11-jdk build-essential && \
+#    echo "# ---------------------------------------------" && \
+#    echo "# Maven Scala SBT NodeJS NPM Sqlite3" && \
+#    echo "# ---------------------------------------------" && \
+#    apt-get -y install maven scala sbt nodejs npm sqlite3 libsqlite3-dev && \
