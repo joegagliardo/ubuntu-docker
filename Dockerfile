@@ -24,7 +24,10 @@ ARG DEBIAN_FRONTEND=noninteractive
 #ADD downloads/foo downloads/tars/${JULIA_FILE} /usr/local/
 
 USER root
-ADD ${JULIA_URL} /usr/local
+#ADD downloads/foo downloads/${JULIA_FILE}* ${JULIA_URL} /usr/local/
+ADD downloads/foo ${JULIA_URL} /usr/local/
+
+RUN echo "oops
 
 # Install Dev Tools & Java
 RUN echo "# ---------------------------------------------" && \
